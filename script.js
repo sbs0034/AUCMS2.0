@@ -10,33 +10,36 @@ $(document).ready(function(){
     pythonScripts = fs.readdirSync("./python-scripts");
     var scriptSelectHtml = []
     for(i=0; i<pythonScripts.length; i++){
-        if(scriptIgnore.indexOf(pythonScripts[i].split(".")[0]) > -1){}
+        if(pythonScripts[i].split(".")[0] == "__pycache__"){}
         else {
             scriptSelectHtml.push("<option>" + pythonScripts[i].split(".")[0] + "</option> ")
         }
     }
     // Fills the scriptSelect with all the names of the python scripts
     $('#scriptSelect').html(scriptSelectHtml)
-    $('#startScript').click(function () {
-    //     var pyshell = new PythonShell("/python-scripts/"+$('#scriptSelect').val()+'.py',{ mode: 'text '});
-    //     pyshell.send('buildInstructions');
-    //     pyshell.on('message', function (message) {
-    //         // received a message sent from the Python script (a simple "print" statement)
-    //         console.log(message);
-    //     });
+    $('#buildGUI').click(function () {
 
-
-        var options = {
+            var options = {
             mode: 'text',
-            pythonPath: 'python3',
-            args: ['value1']
+            pythonPath: 'python',
+            args: ['buildGUI']
         };
 
-        PythonShell.run("/python-scripts/"+$('#scriptSelect').val()+'.py', options, function (err, results) {
+        PythonShell.run("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options, function (err, results) {
             if (err) throw err;
-            // results is an array consisting of messages collected during execution 
-            console.log('results: %j', results);
+            // results is an array consisting of messages collected during execution
+            console.log(results);
+            var scriptGUIFill = []
+            for(i=1; i<results.length; i++){
+                scriptGUIFill.push(results[i])
+            }
+            $('#scriptGUI').html(scriptGUIFill)
         });
     });
-
+    $('#runScript').click(function(){
+        for(i=0; i< document.getElementsByClassName('scriptInput').length; i++){
+            console.log(document.getElementsByClassName('scriptInput')[i].value)
+            console.log(document.getElementsByClassName('scriptInput')[i].id)
+        }
+    })
 });

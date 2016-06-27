@@ -1,0 +1,20 @@
+address = GPIB0::12::INSTR
+
+Created By: Steffen Sullivan
+Last Edited: 03/16/2016
+
+setup code begin
+
+setup code end
+
+main code begin
+
+tm_var = KRDG? A
+
+main code end
+
+finish code begin
+
+finish code end
+
+END
