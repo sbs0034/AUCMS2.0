@@ -34,6 +34,9 @@ $(document).ready(function(){
                 scriptGUIFill.push(results[i])
             }
             $('#scriptGUI').html(scriptGUIFill)
+            $('.addDevice').click(function(){
+                $('#deviceTable').after(scriptGUIFill[scriptGUIFill.indexOf("")+1])
+            })
         });
     });
     $('#runScript').click(function(){
@@ -41,5 +44,37 @@ $(document).ready(function(){
             console.log(document.getElementsByClassName('scriptInput')[i].value)
             console.log(document.getElementsByClassName('scriptInput')[i].id)
         }
+        deviceID=[]
+        for(i=0; i < document.getElementsByClassName('deviceID').length; i++){
+            deviceID.push(document.getElementsByClassName('deviceID')[i].value)}
+
+        inputLow=[]
+        for(i=0; i < document.getElementsByClassName('inputLow').length; i++){
+            inputLow.push(document.getElementsByClassName('inputLow')[i].value)}
+
+        inputHigh=[]
+        for(i=0; i < document.getElementsByClassName('inputHigh').length; i++){
+            inputHigh.push(document.getElementsByClassName('inputHigh')[i].value)}
+
+        currentSteps=[]
+        for(i=0; i < document.getElementsByClassName('currentSteps').length; i++){
+            currentSteps.push(document.getElementsByClassName('currentSteps')[i].value)}
+
+        currentLimit=[]
+        for(i=0; i < document.getElementsByClassName('currentLimit').length; i++){
+            currentLimit.push(document.getElementsByClassName('currentLimit')[i].value)}
+
+        var options = {
+            mode: 'text',
+            pythonPath: 'python',
+            // args: { command: "do_stuff", args: [1, 2, 3] }
+            // args: ['measureDevice',"deviceID:"+deviceID,"inputHigh:"+inputHigh,+"inputLow:"+inputLow,"currentLimit:"+currentLimit,+"currentSteps:"+currentSteps,"userName:"+$('userName').val(),"chipID:"+$('chipID'),"notes:"+$('notes').val()]
+        };
+
+        var shell = new PythonShell("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options);
+        shell.on('message', function (message) {
+            console.log(message)
+            
+        });
     })
 });

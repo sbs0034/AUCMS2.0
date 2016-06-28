@@ -1,5 +1,5 @@
 from AUCMS import *
-import sys
+import sys, time
 databaseMainTableFields = "(Notes TEXT, Time TEXT, Date TEXT, UserName TEXT, CriticalCurrent REAL, Current REAL, Voltage REAL, Resistance REAL, Delay REAL, DeviceIdentifier TEXT,  Tempurature REAL, CurrentLimit REAL, VoltageLimit REAL, ForcedCurrentType TEXT)"
 databaseMainTableFields_ = "(Notes, Time, Date, UserName, CriticalCurrent, Current, Voltage, Resistance, Delay, DeviceIdentifier, Tempurature, CurrentLimit, VoltageLimit, ForcedCurrentType)"
 def ViaTerminal():
@@ -216,12 +216,23 @@ def ViaTerminal():
 
 
 def ViaGUI(arguments):
+    # print(arguments)
     if arguments == "buildGUI":
         print("Input Chip ID: ")
         print("<input type='text' id='chipID' class='scriptInput'></input><br><br>")
-        print("Type of Measurement: ")
-        print("<select id='typeOfMeasurement' class='scriptInput'><option>Constant Current</option><option>Sweep Current</option></select><br><br>")
+        print("User Name: <input type='text' id='userName' class='scriptInput'></input><br><br>")
+        print("Measurement Notes<br>")
+        print("<textarea id='notes' class='scriptInput'></textarea>")
+        print("<table id='deviceTable'>")
+        print("")
+        print("<tr><td>Device ID: <input type='text' class='deviceID'></input></td><td>Input High:  <input type='text' class='inputHigh'></input></td><td>Input Low: <input type='text' class='inputLow'></input></td><td>Current Steps: <input type='text' class='currentSteps'></input></td><td>Current Limit: <input type='text' class='currentLimit'></input></td><td><button class='addDevice'>Add Device</button></td></tr>")
+
+    if arguments == "measureDevice":
+        print(sys.argv[sys.argv.index("")])
+
+print(sys.stdin)
 try:
     ViaGUI(sys.argv[1])
 except:
+    print("Using Terminal")
     ViaTerminal()
