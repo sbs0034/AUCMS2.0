@@ -218,6 +218,7 @@ def ViaTerminal():
 def ViaGUI(arguments):
     # print(arguments)
     if arguments == "buildGUI":
+        print("<h2>Resistor Module</h>")
         print("Input Chip ID: ")
         print("<input type='text' id='chipID' class='scriptInput'></input><br><br>")
         print("User Name: <input type='text' id='userName' class='scriptInput'></input><br><br>")
@@ -230,7 +231,6 @@ def ViaGUI(arguments):
     if arguments == "measureDevice":
         print(sys.argv[sys.argv.index("")])
 
-print(sys.stdin)
 try:
     ViaGUI(sys.argv[1])
 except:
