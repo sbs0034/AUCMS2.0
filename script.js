@@ -1,4 +1,4 @@
-d/**
+/**
  * Created by steffen on 6/27/16.
  */
 var PythonShell = require('python-shell');
