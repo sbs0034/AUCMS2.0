@@ -35,7 +35,7 @@ $(document).ready(function(){
             }
             $('#scriptGUI').html(scriptGUIFill)
             $('.addDevice').click(function(){
-                $('#deviceTable').after(scriptGUIFill[scriptGUIFill.indexOf("")+1])
+                $('.tableRow').last().after(scriptGUIFill[scriptGUIFill.indexOf("")+1])
             })
         });
     });
@@ -64,14 +64,19 @@ $(document).ready(function(){
         for(i=0; i < document.getElementsByClassName('currentLimit').length; i++){
             currentLimit.push(document.getElementsByClassName('currentLimit')[i].value)}
 
+        voltageLimit=[]
+        for(i=0; i < document.getElementsByClassName('voltageLimit').length; i++){
+            voltageLimit.push(document.getElementsByClassName('voltageLimit')[i].value)}
+
         var options = {
             mode: 'text',
             pythonPath: 'python',
             // args: { command: "do_stuff", args: [1, 2, 3] }
-            // args: ['measureDevice',"deviceID:"+deviceID,"inputHigh:"+inputHigh,+"inputLow:"+inputLow,"currentLimit:"+currentLimit,+"currentSteps:"+currentSteps,"userName:"+$('userName').val(),"chipID:"+$('chipID'),"notes:"+$('notes').val()]
+            args: ['measureDevice',"deviceID@"+deviceID,"inputHigh@"+inputHigh,"inputLow@"+inputLow,"currentLimit@"+currentLimit,"currentSteps@"+currentSteps,"userName@"+$('#userName').val(),"chipID@"+$('#chipID').val(),"notes@"+$('#notes').val(),"voltageLimit@"+voltageLimit]
         };
 
         var shell = new PythonShell("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options);
+        console.log("Exicuting python script")
         shell.on('message', function (message) {
             console.log(message)
             
