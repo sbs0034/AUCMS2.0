@@ -35,7 +35,8 @@ $(document).ready(function(){
             }
             $('#scriptGUI').html(scriptGUIFill)
             $('.addDevice').click(function(){
-                $('.tableRow').last().after(scriptGUIFill[scriptGUIFill.indexOf("")+1])
+                console.log(scriptGUIFill)
+                $('.tableRow').last().after("<tr class='tableRow'>"+$('.tableRow').html()+"</tr>")
             })
         });
     });
@@ -71,7 +72,6 @@ $(document).ready(function(){
         var options = {
             mode: 'text',
             pythonPath: 'python',
-            // args: { command: "do_stuff", args: [1, 2, 3] }
             args: ['measureDevice',"deviceID@"+deviceID,"inputHigh@"+inputHigh,"inputLow@"+inputLow,"currentLimit@"+currentLimit,"currentSteps@"+currentSteps,"userName@"+$('#userName').val(),"chipID@"+$('#chipID').val(),"notes@"+$('#notes').val(),"voltageLimit@"+voltageLimit]
         };
 
