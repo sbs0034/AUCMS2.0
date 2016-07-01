@@ -1,0 +1,30 @@
+address = GPIB0::7::INSTR
+
+Created by: Steffen Sullivan
+Date last modified: 01/04/2016
+
+
+setup code begin
+
+open all
+
+setup code end
+
+
+
+main code begin
+
+close (@s_var!nin_var)
+open (@s_var!oin_var)
+
+
+main code end
+
+finish code begin
+
+open all
+
+finish code end
+
+
+END

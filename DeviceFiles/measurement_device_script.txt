@@ -1,0 +1,20 @@
+address = GPIB0::22::INSTR
+
+Created By: Steffen Sullivan
+Last Edited: 01/11/2016
+
+setup code begin
+
+setup code end
+
+main code begin
+
+vm_var = MEAS:VOLT:DC?
+
+main code end
+
+finish code begin
+
+finish code end
+
+END

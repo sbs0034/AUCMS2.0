@@ -1,0 +1,28 @@
+address = GPIB0::1::INSTR
+
+Created By: Steffen Sullivan
+Last Edited: 01/22/2016
+
+setup code begin
+
+SOUR:FUNC CURR
+SOUR:RANG 0
+SOUR:LEV 0
+
+setup code end
+
+main code begin
+
+OUTP ON
+SOUR:RANG i_var
+SOUR:LEV i_var
+
+main code end
+
+finish code begin
+
+OUTP OFF
+
+finish code end
+
+END
