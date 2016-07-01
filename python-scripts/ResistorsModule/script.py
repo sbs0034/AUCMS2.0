@@ -236,45 +236,51 @@ def ViaGUI(arguments):
         while(i < len(newArguments)):
             argumentDict[newArguments[i][0]]=newArguments[i][1]
             i+=1
-        DeviceControl(switching_device, "Setup")
-        DeviceControl(source_device, "Setup")
-        DeviceControl(measurement_device, "Setup")
         switch_inputs_high = argumentDict["inputHigh"].split(",")
+        print(switch_inputs_high)
         deviceIdentifier = argumentDict["deviceID"].split(",")
         wantedCurrentArray = argumentDict["currentLimit"].split(",")
         wantedVoltageArray = argumentDict["voltageLimit"].split(",")
         currentStepsArray = argumentDict["currentSteps"].split(",")
         switch_inputs_low = argumentDict["inputLow"].split(",")
+        # DeviceControl(switching_device, "Setup")
+        # DeviceControl(source_device, "Setup")
+        # DeviceControl(measurement_device, "Setup")
         delay = 0
         i = 0
         i_ = 0
         numOfLoops = 1
+        print("Got to this point")
         while i_ < numOfLoops:
+            print(i_)
             t= 0
             i_ +=1
-            startTime = str(time())
+            # startTime = str(time())
+            print(startTime)
             while(t < len(switch_inputs_high)):
+                print("t: "+str(t))
                 id = deviceIdentifier[t]
                 wantedCurrent = wantedCurrentArray[t]
                 wantedVoltage = wantedVoltageArray[t]
                 currentSteps = currentStepsArray[t]
-                DeviceControl(switching_device, "Finish")
+                # DeviceControl(switching_device, "Finish")
                 x = 0
                 while x < len(switch_inputs_high[t]):
                     _input = switch_inputs_high[t][x]
                     key_words["nin_var"] = _input.split(":")[1]
                     key_words["s_var"] = _input.split(":")[0]
-                    DeviceControl(switching_device, "Main")
+                    # DeviceControl(switching_device, "Main")
                     x+=1
                 v = 0
                 while v < len(switch_inputs_low[t]):
                     _input = switch_inputs_low[t][v]
                     key_words["nin_var"] = _input.split(":")[1]
                     key_words["s_var"] = _input.split(":")[0]
-                    DeviceControl(switching_device, "Main")
+                    # DeviceControl(switching_device, "Main")
                     v+=1
                 t+=1
                 sleep(0.25)
+                print("Made it!")
                 key_words["i_var"] = 0
                 currentToPush = 0
                 databaseVoltage = ""
@@ -289,7 +295,7 @@ def ViaGUI(arguments):
                         currentToPush = currentToPush+(float(currentSteps)/1000)
                         databaseCurrent = databaseCurrent+str(currentToPush)+"\n"
                         key_words["i_var"] = currentToPush
-                        DeviceControl(source_device, "Main")
+                        # DeviceControl(source_device, "Main")
                         measureVoltage = DeviceControl(measurement_device, "Main")[1]
                         databaseVoltage = databaseVoltage+str(measureVoltage)+"\n"
                         databaseResistance = databaseResistance+str(float(measureVoltage)/float(currentToPush))+"\n"
@@ -303,8 +309,8 @@ def ViaGUI(arguments):
                 conn.execute("INSERT INTO "+"'"+_name+"'"+databaseMainTableFields_+" VALUES("+"'"+notes+"'"+","+"'"+str(datetime.datetime.now().hour)+":"+str(datetime.datetime.now().minute)+":"+str(datetime.datetime.now().second)+"'"+","+
                              "'"+str(datetime.datetime.now().year)+'-'+str(datetime.datetime.now().month)+'-'+str(datetime.datetime.now().day)+"'"+','+"'"+userName+"'"+','+str(criticalCurrent)+','+"'"+databaseCurrent+"'"+','+"'"+databaseVoltage+"'"+','+"'"+databaseResistance+"'"+","+delay+","+"'"+str(id)+"'"+","+str(measuredTemp)+","+"'"+str(wantedCurrent)+"'"+","+"'"+str(wantedVoltage)+"'"+",'"+str(measurementType)+"')")
                 conn.commit()
-        DeviceControl(source_device, "Finish")
-        DeviceControl(switching_device, "Finish")
+        # DeviceControl(source_device, "Finish")
+        # DeviceControl(switching_device, "Finish")
         print("Done!")
 try:
     ViaGUI(sys.argv)
