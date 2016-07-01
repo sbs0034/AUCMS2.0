@@ -79,7 +79,7 @@ $(document).ready(function(){
         console.log("Exicuting python script")
         shell.on('message', function (message) {
             console.log(message)
-            
+            $('#dataStream').html(message)
         });
     })
 });
