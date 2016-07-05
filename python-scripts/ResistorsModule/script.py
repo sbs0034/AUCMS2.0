@@ -297,7 +297,7 @@ def ViaGUI(arguments):
                 measureVoltage = 0
                 CURSOR_UP_ONE = '\x1b[1A'
                 ERASE_LINE = '\x1b[2K'
-                while float(measureVoltage) <= float(wantedVoltage and float(wantedCurrent) >= float(currentToPush)):
+                while float(measureVoltage) <= float(wantedVoltage) and float(wantedCurrent) >= float(currentToPush):
                     measuredTemp = DeviceControl(temp_device, "Main")[1]
                     currentToPush = currentToPush+(float(currentSteps)/1000)
                     databaseCurrent = databaseCurrent+str(currentToPush)+"\n"
