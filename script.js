@@ -35,9 +35,10 @@ $(document).ready(function(){
             }
             $('#scriptGUI').html(scriptGUIFill)
             $('.addDevice').click(function(){
-                console.log(scriptGUIFill)
+                alert("Test")
                 $('.tableRow').last().after("<tr class='tableRow'>"+$('.tableRow').html()+"</tr>")
             })
+            componentHandler.upgradeDom()
         });
     });
     $('#runScript').click(function(){

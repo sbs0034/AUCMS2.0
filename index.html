@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>AUCMS</title>
+    <link rel="stylesheet" href="material.min.css">
+	<script src="material.min.js"></script>
     <script src="jquery-3.0.0.js"></script>
     <script src="script.js"></script>
 </head>
-<body>
+<body style="background-color: #E0E0E0">
 <!--Python script selection box to be filled with script.js-->
-<select id="scriptSelect"></select><br>
+<select id="scriptSelect"></select><br><br>
 <!--Button to start the script-->
-<button id="buildGUI">Build GUI</button>
+<button id="buildGUI" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Build GUI</button>
 <div id="scriptGUI" style="padding-top: 20px;"></div>
-<br><br><button id="runScript">Run Script</button>
+<br><br><button id="runScript" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Run Script</button>
 <div id="dataStream"></div>
 </body>
 </html>

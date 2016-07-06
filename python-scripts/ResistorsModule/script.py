@@ -1,5 +1,6 @@
 from AUCMS import *
 import sys, json
+labelDivB = "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>"
 databaseMainTableFields = "(Notes TEXT, Time TEXT, Date TEXT, UserName TEXT, CriticalCurrent REAL, Current REAL, Voltage REAL, Resistance REAL, Delay REAL, DeviceIdentifier TEXT,  Tempurature REAL, CurrentLimit REAL, VoltageLimit REAL, ForcedCurrentType TEXT)"
 databaseMainTableFields_ = "(Notes, Time, Date, UserName, CriticalCurrent, Current, Voltage, Resistance, Delay, DeviceIdentifier, Tempurature, CurrentLimit, VoltageLimit, ForcedCurrentType)"
 def ViaTerminal():
@@ -215,15 +216,14 @@ def ViaTerminal():
 def ViaGUI(arguments):
     if arguments[1] == "buildGUI":
         print("<h2>Resistor Module</h>")
-        print("Input Chip ID: ")
-        print("<input type='text' id='chipID' class='scriptInput'></input><br><br>")
-        print("User Name: <input type='text' id='userName' class='scriptInput'></input><br><br>")
-        print("Measurement Notes<br>")
-        print("<textarea id='notes' class='scriptInput'></textarea><br><br>")
-        print("<table id='deviceTable'>")
+        print(labelDivB+"<input class='scriptInput mdl-textfield__input deviceID' type='text' id='chipID'><label class='mdl-textfield__label' for='chipID'>Chip ID</label></div><br><br>")
+        print(labelDivB+"<input class='scriptInput mdl-textfield__input userName' type='text' id='userName'><label class='mdl-textfield__label' for='userName'>User Name</label></div><br><br>")
+        print("<div class='mdl-textfield mdl-js-textfield'><textarea class='scriptInput mdl-textfield__input' type='text' rows= '3' id='notes' ></textarea><label class='mdl-textfield__label' for='notes'>Notes....</label></div>")
+        print("<table id='deviceTable' class='mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp'>")
         print("")
-        print("<tr class='tableRow'><td>Device ID: <input type='text' class='deviceID'></input></td><td>Input High:  <input type='text' class='inputHigh'></input></td><td>Input Low: <input type='text' class='inputLow'></input></td><td>Current Steps: <input type='text' class='currentSteps'></input></td><td>Current Limit: <input type='text' class='currentLimit'></input></td><td>Voltage Limit: <input type='text' class='voltageLimit'></input></td></tr>")
-        print("<br><button class='addDevice'>Add Device</button><br><br>")
+        print("<tr class='tableRow'><td class='mdl-data-table__cell--non-numeric'><form action='#'><div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'><input class='mdl-textfield__input deviceID' type='text' id='sample3'><label class='mdl-textfield__label' for='sample3'>Device ID</label></div></form></td><td>Input High:  <input type='text' class='inputHigh'></input></td><td>Input Low: <input type='text' class='inputLow'></input></td><td>Current Steps: <input type='text' class='currentSteps'></input></td><td>Current Limit: <input type='text' class='currentLimit'></input></td><td>Voltage Limit: <input type='text' class='voltageLimit'></input></td></tr>")
+        print("<br><button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' class='addDevice'>Add Device</button><br><br>")
+        # <form action='#'><div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'><input class='mdl-textfield__input deviceID' type='text' id='sample3'><label class='mdl-textfield__label' for='sample3'>Device ID</label></div></form>
 
     if arguments[1] == "measureDevice":
         measurementType = "Sweep"
