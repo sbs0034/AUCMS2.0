@@ -222,8 +222,8 @@ def ViaGUI(arguments):
         print("<table id='deviceTable' class='mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp'>")
         print("")
         print("<tr class='tableRow'><td class='mdl-data-table__cell--non-numeric'><form action='#'><div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'><input class='mdl-textfield__input deviceID' type='text' id='sample3'><label class='mdl-textfield__label' for='sample3'>Device ID</label></div></form></td><td>Input High:  <input type='text' class='inputHigh'></input></td><td>Input Low: <input type='text' class='inputLow'></input></td><td>Current Steps: <input type='text' class='currentSteps'></input></td><td>Current Limit: <input type='text' class='currentLimit'></input></td><td>Voltage Limit: <input type='text' class='voltageLimit'></input></td></tr>")
-        print("<br><button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' class='addDevice'>Add Device</button><br><br>")
-        # <form action='#'><div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'><input class='mdl-textfield__input deviceID' type='text' id='sample3'><label class='mdl-textfield__label' for='sample3'>Device ID</label></div></form>
+        print("<br><button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' class='addDevice' onclick='AddDevice()'>Add Device</button><br><br>")
+        #<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'><input class='mdl-textfield__input deviceID' type='text' id='sample3'><label class='mdl-textfield__label' for='sample3'>Device ID</label></div>
 
     if arguments[1] == "measureDevice":
         measurementType = "Sweep"

@@ -5,6 +5,9 @@ var PythonShell = require('python-shell');
 var fs = require('file-system');
 var pythonScripts;
 var scriptIgnore = ["database","measurement_script","terminal_ui","__pycache__"];
+function AddDevice(){
+    $('.tableRow').last().after("<tr class='tableRow'>"+$('.tableRow').html()+"</tr>")
+}
 $(document).ready(function(){
     // Searches through the 'python-scripts' folder for usable scripts
     pythonScripts = fs.readdirSync("./python-scripts");
@@ -34,10 +37,6 @@ $(document).ready(function(){
                 scriptGUIFill.push(results[i])
             }
             $('#scriptGUI').html(scriptGUIFill)
-            $('.addDevice').click(function(){
-                alert("Test")
-                $('.tableRow').last().after("<tr class='tableRow'>"+$('.tableRow').html()+"</tr>")
-            })
             componentHandler.upgradeDom()
         });
     });
