@@ -2223,8 +2223,8 @@ def TestGUI():
         print(voltage[i])
         sleep(0.2)
 try:
-    # ViaGUI(sys.argv)
-    TestGUI()
+    ViaGUI(sys.argv)
+    # TestGUI()
 except:
     print("Using Terminal \n")
     ViaTerminal()
