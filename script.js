@@ -1,6 +1,6 @@
 /**
  * Created by steffen on 6/27/16.
- * Script for building a user interface for the AUCMS Python modules 
+ * Script for building a user interface for the AUCMS Python modules
  */
 var PythonShell = require('python-shell');
 var fs = require('file-system');
@@ -33,7 +33,7 @@ function BuildScriptGUI() {
         }
         $('#scriptGUI').html(scriptGUIFill)
         $('#scriptGUI').show(800)
-        $('body').append('<button class="btn btn-raised btn-primary" onclick="RunScript()">Run Script</button>')
+        $('body').append('<button class="btn btn-raised btn-success" onclick="RunScript()">Run Script</button>')
         $.material.init()
     });
 }
