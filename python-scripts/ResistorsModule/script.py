@@ -1,5 +1,5 @@
 from AUCMS import *
-import sys, json
+import json
 labelDivB = "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>"
 databaseMainTableFields = "(Notes TEXT, Time TEXT, Date TEXT, UserName TEXT, CriticalCurrent REAL, Current REAL, Voltage REAL, Resistance REAL, Delay REAL, DeviceIdentifier TEXT,  Tempurature REAL, CurrentLimit REAL, VoltageLimit REAL, ForcedCurrentType TEXT)"
 databaseMainTableFields_ = "(Notes, Time, Date, UserName, CriticalCurrent, Current, Voltage, Resistance, Delay, DeviceIdentifier, Tempurature, CurrentLimit, VoltageLimit, ForcedCurrentType)"
@@ -218,18 +218,18 @@ def ViaGUI(arguments):
         guiFill = ""
 
         print("<h2>Resistor Module</h>")
-        print('<div class="form-group label-floating"><label for="chipID" class="control-label">Chip ID</label><input type="text" class="form-control scriptInput" id="chipID"></div><br>')
-        print('<div class="form-group label-floating"><label for="userName" class="control-label">User Name</label><input type="text" class="form-control scriptInput" id="userName"></div><br>')
-        print('<div class="form-group label-floating"><label for="notes" class="control-label">Measurement Notes</label><textarea class="form-control scriptInput" id="notes"></textarea></div><br>')
+        print('<div class="form-group label-floating"><label for="chipID" class="control-label" style="font-weight: 600">Chip ID</label><input type="text" class="form-control scriptInput" id="chipID"></div><br>')
+        print('<div class="form-group label-floating"><label for="userName" class="control-label" style="font-weight: 600">User Name</label><input type="text" class="form-control scriptInput" id="userName"></div><br>')
+        print('<div class="form-group label-floating"><label for="notes" class="control-label" style="font-weight: 600">Measurement Notes</label><textarea class="form-control scriptInput" id="notes"></textarea></div><br>')
         print("<table id='deviceTable' class='table'>")
         print("")
         guiFill=guiFill+("<tr class='tableRow'>")
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="deviceID" class="control-label">Device ID</label><input type="text" class="form-control deviceID" id="deviceID"></div></td>')
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="inputHigh" class="control-label">Input High</label><input type="text" class="form-control inputHigh" id="inputHigh"></div></td>')
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="inputLow" class="control-label">Input Low</label><input type="text" class="form-control inputLow" id="inputLow"></div></td>')
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="currentSteps" class="control-label">Current Steps</label><input type="text" class="form-control currentSteps" id="currentSteps"></div></td>')
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="currentLimit" class="control-label">Current Limit</label><input type="text" class="form-control currentLimit" id="currentLimit"></div></td>')
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="voltageLimit" class="control-label">Voltage Limit</label><input type="text" class="form-control voltageLimit" id="voltageLimit"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="deviceID" class="control-label">Device ID</label><input type="text" class="form-control deviceID" id="deviceID"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="inputHigh" class="control-label">Input High</label><input type="text" class="form-control inputHigh" id="inputHigh"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="inputLow" class="control-label">Input Low</label><input type="text" class="form-control inputLow" id="inputLow"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="currentSteps" class="control-label">Current Steps</label><input type="text" class="form-control currentSteps" id="currentSteps"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="currentLimit" class="control-label">Current Limit</label><input type="text" class="form-control currentLimit" id="currentLimit"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="voltageLimit" class="control-label">Voltage Limit</label><input type="text" class="form-control voltageLimit" id="voltageLimit"></div></td>')
         guiFill=guiFill+("</tr>")
         print(guiFill)
         print("<br><button class='btn btn-raised btn-primary' class='addDevice' onclick='AddDevice()'>Add Device</button><br><br>")
