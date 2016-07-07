@@ -90,129 +90,7 @@ def ViaTerminal():
         wantedVoltageArray.append(wantedVoltage_)
         wantedCurrentArray.append(wantedCurrent_)
         currentStepsArray.append(currentSteps_)
-    print("\n \n")
-    print(deviceIdentifier)
-    DeviceControl(switching_device, "Setup")
-    DeviceControl(source_device, "Setup")
-    DeviceControl(measurement_device, "Setup")
-    i = 0
-    i_ = 0
-    dataFile.write("Voltage,Current,Resistance \n")
-    while i_ < numOfLoops:
-        t= 0
-        i_ +=1
-        startTime = str(time())
-        while(t < len(switch_inputs_high)):
-            id = deviceIdentifier[t]
-            wantedCurrent = wantedCurrentArray[t]
-            wantedVoltage = wantedVoltageArray[t]
-            currentSteps = currentStepsArray[t]
-            DeviceControl(switching_device, "Finish")
-            x = 0
-            while x < len(switch_inputs_high[t]):
-                _input = switch_inputs_high[t][x]
-                key_words["nin_var"] = _input.split(":")[1]
-                key_words["s_var"] = _input.split(":")[0]
-                DeviceControl(switching_device, "Main")
-                x+=1
-            v = 0
-            while v < len(switch_inputs_low[t]):
-                _input = switch_inputs_low[t][v]
-                key_words["nin_var"] = _input.split(":")[1]
-                key_words["s_var"] = _input.split(":")[0]
-                DeviceControl(switching_device, "Main")
-                v+=1
-            t+=1
-            sleep(0.25)
-            key_words["i_var"] = 0
-            currentToPush = 0
-            databaseVoltage = ""
-            databaseCurrent = ""
-            databaseResistance = ""
-            measureVoltage = 0
-            CURSOR_UP_ONE = '\x1b[1A'
-            ERASE_LINE = '\x1b[2K'
-            if wantedCurrent == "":
-                while float(measureVoltage) <= float(wantedVoltage):
-                    measuredTemp = DeviceControl(temp_device, "Main")[1]
-                    if(measurementType == "Sweep"):
-                        currentToPush = currentToPush+(float(currentSteps)/1000)
-                    else:
-                        currentToPush=(float(currentSteps)/1000)
-                    databaseCurrent = databaseCurrent+str(currentToPush)+"\n"
-                    key_words["i_var"] = currentToPush
-                    DeviceControl(source_device, "Main")
-                    if(measurementType == "Constant"):
-                        sleep(0.1)
-                        sleep(float(delay))
-                    measureVoltage = DeviceControl(measurement_device, "Main")[1]
-                    databaseVoltage = databaseVoltage+str(measureVoltage)+"\n"
-                    databaseResistance = databaseResistance+str(float(measureVoltage)/float(currentToPush))+"\n"
-                    dataFile.write(str(measureVoltage)+","+str(currentToPush)+","+str(float(measureVoltage)/float(currentToPush))+"\n")
-                    print(CURSOR_UP_ONE + ERASE_LINE+CURSOR_UP_ONE)
-                    print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Voltage Measureed: "+str(float("%.8f" % measureVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
-                    if(measurementType == "Sweep"):
-                        sleep(float(delay))
-                    if(measurementType == "Constant"):
-                        currentToPush+=1
-                    i+=1
-            if wantedVoltage == "":
-                while float(currentToPush) <= float(wantedCurrent):
-                    measuredTemp = DeviceControl(temp_device, "Main")[1]
-                    if(measurementType == "Sweep"):
-                        currentToPush = currentToPush+(float(currentSteps)/1000)
-                    else:
-                        currentToPush=(float(currentSteps)/1000)
-                    databaseCurrent = databaseCurrent+str(currentToPush)+"\n"
-                    key_words["i_var"] = currentToPush
-                    DeviceControl(source_device, "Main")
-                    if(measurementType == "Constant"):
-                        sleep(0.1)
-                        sleep(float(delay))
-                    measureVoltage = DeviceControl(measurement_device, "Main")[1]
-                    databaseVoltage = databaseVoltage+str(measureVoltage)+"\n"
-                    databaseResistance = databaseResistance+str(float(measureVoltage)/float(currentToPush))+"\n"
-                    dataFile.write(str(measureVoltage)+","+str(currentToPush)+","+str(float(measureVoltage)/float(currentToPush))+"\n")
-                    currentToPush +=1
-                    print(CURSOR_UP_ONE + ERASE_LINE+CURSOR_UP_ONE)
-                    print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Voltage Measureed: "+str(float("%.8f" % measureVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
-                    if(measurementType == "Sweel"):
-                        sleep(float(delay))
-                    if(measurementType == "Constant"):
-                        currentToPush+=1
-                    i+=1
-            if wantedVoltage != "" and wantedCurrent != "":
-                while float(measureVoltage) <= float(wantedVoltage) and float(currentToPush) <= float(wantedCurrent):
-                    measuredTemp = DeviceControl(temp_device, "Main")[1]
-                    if(measurementType == "Sweep"):
-                        currentToPush = currentToPush+(float(currentSteps)/1000)
-                    else:
-                        currentToPush=(float(currentSteps)/1000)
-                    databaseCurrent = databaseCurrent+str(currentToPush)+"\n"
-                    key_words["i_var"] = currentToPush
-                    DeviceControl(source_device, "Main")
-                    if(measurementType == "Constant"):
-                        sleep(0.1)
-                        sleep(float(delay))
-                    measureVoltage = DeviceControl(measurement_device, "Main")[1]
-                    databaseVoltage = databaseVoltage+str(measureVoltage)+"\n"
-                    databaseResistance = databaseResistance+str(float(measureVoltage)/float(currentToPush))+"\n"
-                    dataFile.write(str(measureVoltage)+","+str(currentToPush)+","+str(float(measureVoltage)/float(currentToPush))+"\n")
-                    print(CURSOR_UP_ONE + ERASE_LINE+CURSOR_UP_ONE)
-                    print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Voltage Measureed: "+str(float("%.8f" % measureVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush)))))+"   Tempurature: "+str(measuredTemp))
-                    if(measurementType == "Sweep"):
-                        sleep(float(delay))
-                    if(measurementType == "Constant"):
-                        currentToPush+=1
-                    i+=1
-            criticalCurrent = float(currentToPush)-(float(currentSteps)/1000)
-            print("\n")
-            conn.execute("INSERT INTO "+"'"+_name+"'"+databaseMainTableFields_+" VALUES("+"'"+notes+"'"+","+"'"+str(datetime.datetime.now().hour)+":"+str(datetime.datetime.now().minute)+":"+str(datetime.datetime.now().second)+"'"+","+
-                         "'"+str(datetime.datetime.now().year)+'-'+str(datetime.datetime.now().month)+'-'+str(datetime.datetime.now().day)+"'"+','+"'"+userName+"'"+','+str(criticalCurrent)+','+"'"+databaseCurrent+"'"+','+"'"+databaseVoltage+"'"+','+"'"+databaseResistance+"'"+","+delay+","+"'"+str(id)+"'"+","+str(measuredTemp)+","+"'"+str(wantedCurrent)+"'"+","+"'"+str(wantedVoltage)+"'"+",'"+str(measurementType)+"')")
-            conn.commit()
-    DeviceControl(source_device, "Finish")
-    DeviceControl(switching_device, "Finish")
-    print("Done!")
+    MakeMeasurement("Terminal",userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray)
 def ViaGUI(arguments):
     if arguments[1] == "buildGUI":
         guiFill = ""
@@ -232,8 +110,7 @@ def ViaGUI(arguments):
         guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="voltageLimit" class="control-label">Voltage Limit</label><input type="text" class="form-control voltageLimit" id="voltageLimit"></div></td>')
         guiFill=guiFill+("</tr>")
         print(guiFill)
-        print("<br><button class='btn btn-raised btn-primary' class='addDevice' onclick='AddDevice()'>Add Device</button><br><br>")
-        #<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'><input class='mdl-textfield__input deviceID' type='text' id='sample3'><label class='mdl-textfield__label' for='sample3'>Device ID</label></div>
+        print("<br><button class='btn btn-raised btn-warning' class='addDevice' onclick='AddDevice()'>Add Device</button><br><br>")
 
     if arguments[1] == "measureDevice":
         measurementType = "Sweep"
@@ -249,7 +126,6 @@ def ViaGUI(arguments):
             i+=1
         notes = argumentDict["notes"]
         switch_inputs_high = argumentDict["inputHigh"].split(",")
-        print(switch_inputs_high)
         deviceIdentifier = argumentDict["deviceID"].split(",")
         wantedCurrentArray = argumentDict["currentLimit"].split(",")
         wantedVoltageArray = argumentDict["voltageLimit"].split(",")
@@ -260,73 +136,80 @@ def ViaGUI(arguments):
         DeviceControl(measurement_device, "Setup")
         _name = argumentDict["chipID"]+"-Resistors"
         userName = argumentDict["userName"]
-        try:
-            CreateDatabaseTables(_name, databaseMainTableFields)
+        MakeMeasurement("GUI",userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray)
+def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray):
+    DeviceControl(switching_device, "Setup")
+    DeviceControl(source_device, "Setup")
+    DeviceControl(measurement_device, "Setup")
+    try:
+        CreateDatabaseTables(_name, databaseMainTableFields)
+        conn.commit()
+    except:
+        pass
+    delay = 0
+    i = 0
+    i_ = 0
+    numOfLoops = 1
+    print("Got to this point")
+    while i_ < numOfLoops:
+        t= 0
+        i_ +=1
+        startTime = str(time())
+        while(t < len(switch_inputs_high)):
+            id = deviceIdentifier[t]
+            if(wantedCurrentArray[t] == ""):
+                wantedCurrent = float("inf")
+            else:
+                wantedCurrent = wantedCurrentArray[t]
+            wantedVoltage = wantedVoltageArray[t]
+            currentSteps = currentStepsArray[t]
+            DeviceControl(switching_device, "Finish")
+            x = 0
+            while x < len(switch_inputs_high[t]):
+                _input = switch_inputs_high[t]
+                key_words["nin_var"] = _input.split(":")[1]
+                key_words["s_var"] = _input.split(":")[0]
+                DeviceControl(switching_device, "Main")
+                x+=1
+            v = 0
+            while v < len(switch_inputs_low[t]):
+                _input = switch_inputs_low[t]
+                key_words["nin_var"] = _input.split(":")[1]
+                key_words["s_var"] = _input.split(":")[0]
+                DeviceControl(switching_device, "Main")
+                v+=1
+            t+=1
+            sleep(0.25)
+            key_words["i_var"] = 0
+            currentToPush = 0
+            databaseVoltage = ""
+            databaseCurrent = ""
+            databaseResistance = ""
+            measureVoltage = 0
+            CURSOR_UP_ONE = '\x1b[1A'
+            ERASE_LINE = '\x1b[2K'
+            while float(measureVoltage) <= float(wantedVoltage) and float(wantedCurrent) >= float(currentToPush):
+                measuredTemp = DeviceControl(temp_device, "Main")[1]
+                currentToPush = currentToPush+(float(currentSteps)/1000)
+                databaseCurrent = databaseCurrent+str(currentToPush)+"\n"
+                key_words["i_var"] = currentToPush
+                DeviceControl(source_device, "Main")
+                measureVoltage = DeviceControl(measurement_device, "Main")[1]
+                databaseVoltage = databaseVoltage+str(measureVoltage)+"\n"
+                databaseResistance = databaseResistance+str(float(measureVoltage)/float(currentToPush))+"\n"
+                # dataFile.write(str(measureVoltage)+","+str(currentToPush)+","+str(float(measureVoltage)/float(currentToPush))+"\n")
+                if(userInteraction == "Terminal"):
+                    print(CURSOR_UP_ONE + ERASE_LINE+CURSOR_UP_ONE)
+                print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Voltage Measureed: "+str(float("%.8f" % measureVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
+                sleep(float(delay))
+                i+=1
+            criticalCurrent = float(currentToPush)-(float(currentSteps)/1000)
+            conn.execute("INSERT INTO "+"'"+_name+"'"+databaseMainTableFields_+" VALUES("+"'"+notes+"'"+","+"'"+str(datetime.datetime.now().hour)+":"+str(datetime.datetime.now().minute)+":"+str(datetime.datetime.now().second)+"'"+","+
+                         "'"+str(datetime.datetime.now().year)+'-'+str(datetime.datetime.now().month)+'-'+str(datetime.datetime.now().day)+"'"+','+"'"+userName+"'"+','+str(criticalCurrent)+','+"'"+databaseCurrent+"'"+','+"'"+databaseVoltage+"'"+','+"'"+databaseResistance+"'"+","+str(delay)+","+"'"+str(id)+"'"+","+str(measuredTemp)+","+"'"+str(wantedCurrent)+"'"+","+"'"+str(wantedVoltage)+"'"+",'"+str(measurementType)+"')")
             conn.commit()
-        except:
-            pass
-        delay = 0
-        i = 0
-        i_ = 0
-        numOfLoops = 1
-        print("Got to this point")
-        while i_ < numOfLoops:
-            t= 0
-            i_ +=1
-            startTime = str(time())
-            while(t < len(switch_inputs_high)):
-                id = deviceIdentifier[t]
-                if(wantedCurrentArray[t] == ""):
-                    wantedCurrent = float("inf")
-                else:
-                    wantedCurrent = wantedCurrentArray[t]
-                wantedVoltage = wantedVoltageArray[t]
-                currentSteps = currentStepsArray[t]
-                DeviceControl(switching_device, "Finish")
-                x = 0
-                while x < len(switch_inputs_high[t]):
-                    _input = switch_inputs_high[t]
-                    key_words["nin_var"] = _input.split(":")[1]
-                    key_words["s_var"] = _input.split(":")[0]
-                    DeviceControl(switching_device, "Main")
-                    x+=1
-                v = 0
-                while v < len(switch_inputs_low[t]):
-                    _input = switch_inputs_low[t]
-                    key_words["nin_var"] = _input.split(":")[1]
-                    key_words["s_var"] = _input.split(":")[0]
-                    DeviceControl(switching_device, "Main")
-                    v+=1
-                t+=1
-                sleep(0.25)
-                key_words["i_var"] = 0
-                currentToPush = 0
-                databaseVoltage = ""
-                databaseCurrent = ""
-                databaseResistance = ""
-                measureVoltage = 0
-                CURSOR_UP_ONE = '\x1b[1A'
-                ERASE_LINE = '\x1b[2K'
-                while float(measureVoltage) <= float(wantedVoltage) and float(wantedCurrent) >= float(currentToPush):
-                    measuredTemp = DeviceControl(temp_device, "Main")[1]
-                    currentToPush = currentToPush+(float(currentSteps)/1000)
-                    databaseCurrent = databaseCurrent+str(currentToPush)+"\n"
-                    key_words["i_var"] = currentToPush
-                    DeviceControl(source_device, "Main")
-                    measureVoltage = DeviceControl(measurement_device, "Main")[1]
-                    databaseVoltage = databaseVoltage+str(measureVoltage)+"\n"
-                    databaseResistance = databaseResistance+str(float(measureVoltage)/float(currentToPush))+"\n"
-                    # dataFile.write(str(measureVoltage)+","+str(currentToPush)+","+str(float(measureVoltage)/float(currentToPush))+"\n")
-                    # print(CURSOR_UP_ONE + ERASE_LINE+CURSOR_UP_ONE)
-                    print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Voltage Measureed: "+str(float("%.8f" % measureVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
-                    sleep(float(delay))
-                    i+=1
-                criticalCurrent = float(currentToPush)-(float(currentSteps)/1000)
-                conn.execute("INSERT INTO "+"'"+_name+"'"+databaseMainTableFields_+" VALUES("+"'"+notes+"'"+","+"'"+str(datetime.datetime.now().hour)+":"+str(datetime.datetime.now().minute)+":"+str(datetime.datetime.now().second)+"'"+","+
-                             "'"+str(datetime.datetime.now().year)+'-'+str(datetime.datetime.now().month)+'-'+str(datetime.datetime.now().day)+"'"+','+"'"+userName+"'"+','+str(criticalCurrent)+','+"'"+databaseCurrent+"'"+','+"'"+databaseVoltage+"'"+','+"'"+databaseResistance+"'"+","+str(delay)+","+"'"+str(id)+"'"+","+str(measuredTemp)+","+"'"+str(wantedCurrent)+"'"+","+"'"+str(wantedVoltage)+"'"+",'"+str(measurementType)+"')")
-                conn.commit()
-        DeviceControl(source_device, "Finish")
-        DeviceControl(switching_device, "Finish")
+    DeviceControl(source_device, "Finish")
+    DeviceControl(switching_device, "Finish")
+    if(userInteraction == "Terminal"):
         print("Done!")
 try:
     ViaGUI(sys.argv)
