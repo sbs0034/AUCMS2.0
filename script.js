@@ -5,11 +5,50 @@ var PythonShell = require('python-shell');
 var fs = require('file-system');
 var pythonScripts;
 var scriptIgnore = ["database","measurement_script","terminal_ui","__pycache__"];
+
+// Add another device to script
 function AddDevice(){
+  console.log("<tr class='tableRow'>"+$('.tableRow').html()+"</tr>")
     $('.tableRow').last().after("<tr class='tableRow'>"+$('.tableRow').html()+"</tr>")
+    $.material.init()
+  }
+
+
+// Build GUI for selected module
+function BuildScriptGUI() {
+
+        var options = {
+        mode: 'text',
+        pythonPath: 'python',
+        args: ['buildGUI']
+    };
+
+    PythonShell.run("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options, function (err, results) {
+        if (err) throw err;
+        // results is an array consisting of messages collected during execution
+        console.log(results);
+        var scriptGUIFill = []
+        for(i=1; i<results.length; i++){
+            scriptGUIFill.push(results[i])
+        }
+        $('#scriptGUI').html(scriptGUIFill)
+        $.material.init()
+    });
 }
+
+
 $(document).ready(function(){
+    // Build Initial Gui for launching scripts.
+    function BuildInitialGui(){
+      // File input button
+      $('body').append('<label for="scriptSelect">Choose Module</label> <select id="scriptSelect" class="form-control scriptInput"></select>')
+      $('body').append('<button id="buildGUI" class="btn btn-raised btn-primary" onclick="BuildScriptGUI()">Build GUI</button>')
+      $('body').append('<div id="scriptGUI"></div>')
+    }
+
+
     // Searches through the 'python-scripts' folder for usable scripts
+    function ScriptSelectorFill(){
     pythonScripts = fs.readdirSync("./python-scripts");
     var scriptSelectHtml = []
     for(i=0; i<pythonScripts.length; i++){
@@ -19,27 +58,10 @@ $(document).ready(function(){
         }
     }
     // Fills the scriptSelect with all the names of the python scripts
-    $('#scriptSelect').html(scriptSelectHtml)
-    $('#buildGUI').click(function () {
+    $('#scriptSelect').append(scriptSelectHtml)
 
-            var options = {
-            mode: 'text',
-            pythonPath: 'python',
-            args: ['buildGUI']
-        };
 
-        PythonShell.run("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options, function (err, results) {
-            if (err) throw err;
-            // results is an array consisting of messages collected during execution
-            console.log(results);
-            var scriptGUIFill = []
-            for(i=1; i<results.length; i++){
-                scriptGUIFill.push(results[i])
-            }
-            $('#scriptGUI').html(scriptGUIFill)
-            componentHandler.upgradeDom()
-        });
-    });
+  }
     $('#runScript').click(function(){
         for(i=0; i< document.getElementsByClassName('scriptInput').length; i++){
             console.log(document.getElementsByClassName('scriptInput')[i].value)
@@ -82,4 +104,7 @@ $(document).ready(function(){
             $('#dataStream').html(message)
         });
     })
+    BuildInitialGui()
+    ScriptSelectorFill()
+    $.material.init()
 });

@@ -215,14 +215,24 @@ def ViaTerminal():
     print("Done!")
 def ViaGUI(arguments):
     if arguments[1] == "buildGUI":
+        guiFill = ""
+
         print("<h2>Resistor Module</h>")
-        print(labelDivB+"<input class='scriptInput mdl-textfield__input deviceID' type='text' id='chipID'><label class='mdl-textfield__label' for='chipID'>Chip ID</label></div><br><br>")
-        print(labelDivB+"<input class='scriptInput mdl-textfield__input userName' type='text' id='userName'><label class='mdl-textfield__label' for='userName'>User Name</label></div><br><br>")
-        print("<div class='mdl-textfield mdl-js-textfield'><textarea class='scriptInput mdl-textfield__input' type='text' rows= '3' id='notes' ></textarea><label class='mdl-textfield__label' for='notes'>Notes....</label></div>")
-        print("<table id='deviceTable' class='mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp'>")
+        print('<div class="form-group label-floating"><label for="chipID" class="control-label">Chip ID</label><input type="text" class="form-control scriptInput" id="chipID"></div><br>')
+        print('<div class="form-group label-floating"><label for="userName" class="control-label">User Name</label><input type="text" class="form-control scriptInput" id="userName"></div><br>')
+        print('<div class="form-group label-floating"><label for="notes" class="control-label">Measurement Notes</label><textarea class="form-control scriptInput" id="notes"></textarea></div><br>')
+        print("<table id='deviceTable' class='table'>")
         print("")
-        print("<tr class='tableRow'><td class='mdl-data-table__cell--non-numeric'><form action='#'><div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'><input class='mdl-textfield__input deviceID' type='text' id='sample3'><label class='mdl-textfield__label' for='sample3'>Device ID</label></div></form></td><td>Input High:  <input type='text' class='inputHigh'></input></td><td>Input Low: <input type='text' class='inputLow'></input></td><td>Current Steps: <input type='text' class='currentSteps'></input></td><td>Current Limit: <input type='text' class='currentLimit'></input></td><td>Voltage Limit: <input type='text' class='voltageLimit'></input></td></tr>")
-        print("<br><button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' class='addDevice' onclick='AddDevice()'>Add Device</button><br><br>")
+        guiFill=guiFill+("<tr class='tableRow'>")
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="deviceID" class="control-label">Device ID</label><input type="text" class="form-control deviceID" id="deviceID"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="inputHigh" class="control-label">Input High</label><input type="text" class="form-control inputHigh" id="inputHigh"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="inputLow" class="control-label">Input Low</label><input type="text" class="form-control inputLow" id="inputLow"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="currentSteps" class="control-label">Current Steps</label><input type="text" class="form-control currentSteps" id="currentSteps"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="currentLimit" class="control-label">Current Limit</label><input type="text" class="form-control currentLimit" id="currentLimit"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label for="voltageLimit" class="control-label">Voltage Limit</label><input type="text" class="form-control voltageLimit" id="voltageLimit"></div></td>')
+        guiFill=guiFill+("</tr>")
+        print(guiFill)
+        print("<br><button class='btn btn-raised btn-primary' class='addDevice' onclick='AddDevice()'>Add Device</button><br><br>")
         #<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'><input class='mdl-textfield__input deviceID' type='text' id='sample3'><label class='mdl-textfield__label' for='sample3'>Device ID</label></div>
 
     if arguments[1] == "measureDevice":
