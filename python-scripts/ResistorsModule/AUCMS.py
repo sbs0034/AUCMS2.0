@@ -26,7 +26,7 @@ def DeviceControl(device_file, option):
 
     # Chages the variable in the device script file with what it is set to
     def VarrialbleChange(deviceCode):
-        for line in range(len(deviceCode):
+        for line in range(len(deviceCode)):
             # Replaces the varriable in the device script with the varriable's definition set by the code
             for origVar, varDef in deviceVar.items():
                 code = deviceCode[line]
