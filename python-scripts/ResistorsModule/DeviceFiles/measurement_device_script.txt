@@ -9,7 +9,7 @@ setup code end
 
 main code begin
 
-vm_var = MEAS:VOLT:DC?
+voltageMeasured = MEAS:VOLT:DC?
 
 main code end
 

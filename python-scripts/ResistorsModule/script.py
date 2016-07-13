@@ -1,8 +1,15 @@
-from AUCMS import *
+import AUCMS, time, datetime
 import json
 labelDivB = "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>"
 databaseMainTableFields = "(Notes TEXT, Time TEXT, Date TEXT, UserName TEXT, CriticalCurrent REAL, Current REAL, Voltage REAL, Resistance REAL, Delay REAL, DeviceIdentifier TEXT,  Tempurature REAL, CurrentLimit REAL, VoltageLimit REAL, ForcedCurrentType TEXT)"
 databaseMainTableFields_ = "(Notes, Time, Date, UserName, CriticalCurrent, Current, Voltage, Resistance, Delay, DeviceIdentifier, Tempurature, CurrentLimit, VoltageLimit, ForcedCurrentType)"
+
+#For Testing purposes
+source_device = "DeviceFiles/source_device_script.txt"
+measurement_device = "DeviceFiles/measurement_device_script.txt"
+switching_device = "DeviceFiles/switching_device_script.txt"
+temp_device = "DeviceFiles/temp_device_script.txt"
+
 def ViaTerminal():
     print("\n \n")
     print("*******************************************")
@@ -91,6 +98,7 @@ def ViaTerminal():
         wantedCurrentArray.append(wantedCurrent_)
         currentStepsArray.append(currentSteps_)
     MakeMeasurement("Terminal",userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray)
+
 def ViaGUI(arguments):
     if arguments[1] == "buildGUI":
         guiFill = ""
@@ -137,24 +145,23 @@ def ViaGUI(arguments):
         _name = argumentDict["chipID"]+"-Resistors"
         userName = argumentDict["userName"]
         MakeMeasurement("GUI",userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray)
+
 def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray):
-    DeviceControl(switching_device, "Setup")
-    DeviceControl(source_device, "Setup")
-    DeviceControl(measurement_device, "Setup")
+    AUCMS.DeviceControl(switching_device, "Setup")
+    AUCMS.DeviceControl(source_device, "Setup")
+    AUCMS.DeviceControl(measurement_device, "Setup")
     try:
-        CreateDatabaseTables(_name, databaseMainTableFields)
-        conn.commit()
+        AUCMS.CreateDatabaseTables(_name, databaseMainTableFields)
     except:
         pass
     delay = 0
     i = 0
     i_ = 0
     numOfLoops = 1
-    print("Got to this point")
     while i_ < numOfLoops:
         t= 0
         i_ +=1
-        startTime = str(time())
+        startTime = str(time.time())
         while(t < len(switch_inputs_high)):
             id = deviceIdentifier[t]
             if(wantedCurrentArray[t] == ""):
@@ -180,7 +187,7 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
                 v+=1
             t+=1
             sleep(0.25)
-            key_words["i_var"] = 0
+            AUCMS.deviceVar["currentToSource"] = 0
             currentToPush = 0
             databaseVoltage = ""
             databaseCurrent = ""
@@ -204,13 +211,14 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
                 sleep(float(delay))
                 i+=1
             criticalCurrent = float(currentToPush)-(float(currentSteps)/1000)
-            conn.execute("INSERT INTO "+"'"+_name+"'"+databaseMainTableFields_+" VALUES("+"'"+notes+"'"+","+"'"+str(datetime.datetime.now().hour)+":"+str(datetime.datetime.now().minute)+":"+str(datetime.datetime.now().second)+"'"+","+
+            AUCMS.conn.execute("INSERT INTO "+"'"+_name+"'"+databaseMainTableFields_+" VALUES("+"'"+notes+"'"+","+"'"+str(datetime.datetime.now().hour)+":"+str(datetime.datetime.now().minute)+":"+str(datetime.datetime.now().second)+"'"+","+
                          "'"+str(datetime.datetime.now().year)+'-'+str(datetime.datetime.now().month)+'-'+str(datetime.datetime.now().day)+"'"+','+"'"+userName+"'"+','+str(criticalCurrent)+','+"'"+databaseCurrent+"'"+','+"'"+databaseVoltage+"'"+','+"'"+databaseResistance+"'"+","+str(delay)+","+"'"+str(id)+"'"+","+str(measuredTemp)+","+"'"+str(wantedCurrent)+"'"+","+"'"+str(wantedVoltage)+"'"+",'"+str(measurementType)+"')")
-            conn.commit()
-    DeviceControl(source_device, "Finish")
-    DeviceControl(switching_device, "Finish")
+            AUCMS.conn.commit()
+    AUCMS.DeviceControl(source_device, "Finish")
+    AUCMS.DeviceControl(switching_device, "Finish")
     if(userInteraction == "Terminal"):
         print("Done!")
+
 def TestGUI():
     voltage=[
     0.00240558253,
