@@ -157,7 +157,7 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
                 wantedCurrent = wantedCurrentArray[t]
             wantedVoltage = wantedVoltageArray[t]
             currentSteps = currentStepsArray[t]
-            DeviceControl(switching_device, "Finish")
+            AUCMS.DeviceControl(switching_device, "Finish")
             x = 0
             while x < len(switch_inputs_high[t]):
                 _input = switch_inputs_high[t]
