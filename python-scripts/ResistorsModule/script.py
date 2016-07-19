@@ -161,19 +161,19 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
             x = 0
             while x < len(switch_inputs_high[t]):
                 _input = switch_inputs_high[t]
-                key_words["nin_var"] = _input.split(":")[1]
-                key_words["s_var"] = _input.split(":")[0]
-                DeviceControl(switching_device, "Main")
+                AUCMS.deviceVar["nin_var"] = _input.split(":")[1]
+                AUCMS.deviceVar["s_var"] = _input.split(":")[0]
+                AUCMS.DeviceControl(switching_device, "Main")
                 x+=1
             v = 0
             while v < len(switch_inputs_low[t]):
                 _input = switch_inputs_low[t]
-                key_words["nin_var"] = _input.split(":")[1]
-                key_words["s_var"] = _input.split(":")[0]
-                DeviceControl(switching_device, "Main")
+                AUCMS.deviceVar["nin_var"] = _input.split(":")[1]
+                AUCMS.deviceVar["s_var"] = _input.split(":")[0]
+                AUCMS.DeviceControl(switching_device, "Main")
                 v+=1
             t+=1
-            sleep(0.25)
+            time.sleep(0.25)
             AUCMS.deviceVar["currentToSource"] = 0
             currentToPush = 0
             databaseVoltage = ""
@@ -186,8 +186,8 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
                 measuredTemp = DeviceControl(temp_device, "Main")[1]
                 currentToPush = currentToPush+(float(currentSteps)/1000)
                 databaseCurrent = databaseCurrent+str(currentToPush)+"\n"
-                key_words["i_var"] = currentToPush
-                DeviceControl(source_device, "Main")
+                AUCMS.deviceVar["i_var"] = currentToPush
+                AUCMS.DeviceControl(source_device, "Main")
                 measureVoltage = DeviceControl(measurement_device, "Main")[1]
                 databaseVoltage = databaseVoltage+str(measureVoltage)+"\n"
                 databaseResistance = databaseResistance+str(float(measureVoltage)/float(currentToPush))+"\n"
