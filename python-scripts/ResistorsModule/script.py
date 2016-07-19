@@ -57,7 +57,7 @@ def ViaTerminal():
     while(userInputHigh != ""):
         userInputHigh = input("Input HIGH: ")
         if userInputHigh != "":
-            switch_inputs_high.append(userInputHigh.split(","))
+            switch_inputs_high.append(userInputHigh)
         x = 0
         try:
             while x < len(switch_inputs_high[_i]):
@@ -70,7 +70,7 @@ def ViaTerminal():
             pass
         userInputLow = input("Input LOW: ")
         if userInputLow != "":
-            switch_inputs_low.append(userInputLow.split(","))
+            switch_inputs_low.append(userInputLow)
         x = 0
         try:
             while x < len(switch_inputs_low[_i]):
