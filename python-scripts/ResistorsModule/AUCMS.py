@@ -32,7 +32,7 @@ def DeviceControl(device_file, option):
                 code = deviceCode[line]
                 code = str(code)
                 new_code = code.replace(str(origVar), str(varDef))
-                deviceCode[i_] = new_code.strip()
+                deviceCode[line] = new_code.strip()
         return deviceCode
 
     # Finds any varraibles that will need to be returned by the instrument
