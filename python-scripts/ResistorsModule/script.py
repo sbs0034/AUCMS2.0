@@ -1,4 +1,4 @@
-import AUCMS, time, datetime, sys, json
+import AUCMS, time, datetime, sys, json, requests
 labelDivB = "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>"
 databaseMainTableFields = "(Notes TEXT, Time TEXT, Date TEXT, UserName TEXT, CriticalCurrent REAL, Current REAL, Voltage REAL, Resistance REAL, Delay REAL, DeviceIdentifier TEXT,  Tempurature REAL, CurrentLimit REAL, VoltageLimit REAL, ForcedCurrentType TEXT)"
 databaseMainTableFields_ = "(Notes, Time, Date, UserName, CriticalCurrent, Current, Voltage, Resistance, Delay, DeviceIdentifier, Tempurature, CurrentLimit, VoltageLimit, ForcedCurrentType)"
@@ -99,7 +99,7 @@ def ViaTerminal():
     MakeMeasurement("Terminal",userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray)
 
 def ViaGUI(arguments):
-    if arguments[1] == "buildGUI":
+    if arguments["action"] == "buildGUI":
         guiFill = ""
 
         print("<h2>Resistor Module</h>")
@@ -109,40 +109,29 @@ def ViaGUI(arguments):
         print("<table id='deviceTable' class='table'>")
         print("")
         guiFill=guiFill+("<tr class='tableRow'>")
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="deviceID" class="control-label">Device ID</label><input type="text" class="form-control deviceID" id="deviceID"></div></td>')
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="inputHigh" class="control-label">Input High</label><input type="text" class="form-control inputHigh" id="inputHigh"></div></td>')
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="inputLow" class="control-label">Input Low</label><input type="text" class="form-control inputLow" id="inputLow"></div></td>')
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="currentSteps" class="control-label">Current Steps (mA)</label><input type="text" class="form-control currentSteps" id="currentSteps"></div></td>')
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="currentLimit" class="control-label">Current Limit (mA)</label><input type="text" class="form-control currentLimit" id="currentLimit"></div></td>')
-        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="voltageLimit" class="control-label">Voltage Limit (V)</label><input type="text" class="form-control voltageLimit" id="voltageLimit"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="deviceID" class="control-label">Device ID</label><input type="text" class="form-control scriptInput deviceID" id="deviceID"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="inputHigh" class="control-label">Input High</label><input type="text" class="form-control scriptInput inputHigh" id="inputHigh"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="inputLow" class="control-label">Input Low</label><input type="text" class="form-control scriptInput inputLow" id="inputLow"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="currentSteps" class="control-label">Current Steps (mA)</label><input type="text" class="form-control scriptInput currentSteps" id="currentSteps"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="currentLimit" class="control-label">Current Limit (mA)</label><input type="text" class="form-control scriptInput currentLimit" id="currentLimit"></div></td>')
+        guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="voltageLimit" class="control-label">Voltage Limit (V)</label><input type="text" class="form-control scriptInput voltageLimit" id="voltageLimit"></div></td>')
         guiFill=guiFill+("</tr>")
         print(guiFill)
         print("<br><button class='btn btn-raised btn-warning' class='addDevice' onclick='AddDevice()'>Add Device</button><br><br>")
 
-    if arguments[1] == "measureDevice":
+    if arguments["action"] == "measureDevice":
         measurementType = "Sweep"
-        i = 2
-        newArguments = []
-        while(i < len(arguments)):
-            newArguments.append(arguments[i].split("@"))
-            i+=1
-        argumentDict = {}
-        i=0
-        while(i < len(newArguments)):
-            argumentDict[newArguments[i][0]]=newArguments[i][1]
-            i+=1
-        notes = argumentDict["notes"]
-        switch_inputs_high = argumentDict["inputHigh"].split(",")
-        deviceIdentifier = argumentDict["deviceID"].split(",")
-        wantedCurrentArray = argumentDict["currentLimit"].split(",")
-        wantedVoltageArray = argumentDict["voltageLimit"].split(",")
-        currentStepsArray = argumentDict["currentSteps"].split(",")
-        switch_inputs_low = argumentDict["inputLow"].split(",")
-        DeviceControl(switching_device, "Setup")
-        DeviceControl(source_device, "Setup")
-        DeviceControl(measurement_device, "Setup")
         _name = argumentDict["chipID"]+"-Resistors"
         userName = argumentDict["userName"]
+        userName= arguments["userName"]
+        notes=arguments["notes"]
+        _name=arguments["chipID"]+"-Resistors"
+        deviceIdentifier=arguments["deviceID"]
+        switch_inputs_high=arguments["inputHigh"]
+        switch_inputs_low=arguments["inputLow"]
+        currentStepsArray=arguments["currentSteps"]
+        wantedCurrentArray=arguments["currentLimit"]
+        wantedVoltageArray=arguments["voltageLimit"]
         MakeMeasurement("GUI",userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray)
 
 def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray):
@@ -2230,8 +2219,7 @@ def TestGUI():
         print(voltage[i])
         sleep(0.2)
 try:
-    ViaGUI(sys.argv)
-    # TestGUI()
+    ViaGUI(json.loads(sys.argv[1]))
 except:
     print("Using Terminal \n")
     ViaTerminal()
