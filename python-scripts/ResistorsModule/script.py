@@ -28,7 +28,6 @@ def ViaTerminal():
     print("2. Constant current")
     measurementType = input("Choose measurement type: ")
     dataFile = open("DataDump.csv", "w")
-    scriptLog.write("DataDump data overwritten \n")
     delay = input("Input delay between each current step: ")
     numOfLoops = int(input("Input number of times to measure: "))
     userName = input("Input user name: ")
