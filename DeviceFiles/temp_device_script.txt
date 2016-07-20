@@ -9,7 +9,7 @@ setup code end
 
 main code begin
 
-tm_var = KRDG? A
+tempuratureMeasured = KRDG? A
 
 main code end
 

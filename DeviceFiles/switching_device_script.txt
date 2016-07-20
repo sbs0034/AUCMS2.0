@@ -14,8 +14,8 @@ setup code end
 
 main code begin
 
-close (@s_var!nin_var)
-open (@s_var!oin_var)
+close (@s_var!inputToClose)
+open (@s_var!inputToOpen)
 
 
 main code end
