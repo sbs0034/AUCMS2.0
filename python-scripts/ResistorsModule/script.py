@@ -129,11 +129,9 @@ def ViaGUI(arguments):
 
     if arguments["action"] == "measureDevice":
         measurementType = "Sweep"
-        _name = argumentDict["chipID"]+"-Resistors"
-        userName = argumentDict["userName"]
-        userName= arguments["userName"]
-        notes=arguments["notes"]
-        _name=arguments["chipID"]+"-Resistors"
+        _name = arguments["chipID"][0]+"-Resistors"
+        userName = arguments["userName"][0]
+        notes=arguments["notes"][0]
         deviceIdentifier=arguments["deviceID"]
         switch_inputs_high=arguments["inputHigh"]
         switch_inputs_low=arguments["inputLow"]
@@ -2227,8 +2225,8 @@ def TestGUI():
         print(current[i])
         print(voltage[i])
         time.sleep(0.2)
-try:
-    ViaGUI(json.loads(sys.argv[1]))
-except:
-    print("Using Terminal \n")
-    ViaTerminal()
+# try:
+ViaGUI(json.loads(sys.argv[1]))
+# except:
+    # print("Using Terminal \n")
+    # ViaTerminal()
