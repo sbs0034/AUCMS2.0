@@ -7,27 +7,21 @@ var fs = require('file-system');
 var pythonScripts;
 var scriptIgnore = ["database","measurement_script","terminal_ui","__pycache__"];
 
-// Add another device to script
-function AddDevice(){
-  console.log("<tr class='tableRow'>"+$('.tableRow').html()+"</tr>")
-    $('.tableRow').last().after("<tr class='tableRow'>"+$('.tableRow').html()+"</tr>")
-    $.material.init()
-}
-
 // Build GUI for selected module
 function BuildScriptGUI() {
+  stuff = {}
+  stuff['action']='buildGUI'
 
-        var options = {
-        mode: 'text',
-        pythonPath: 'python',
-        args: ['buildGUI']
+    var options = {
+    mode: 'text',
+    pythonPath: 'python',
+    args: [JSON.stringify(stuff)]
     };
-
+    var scriptGUIFill = []
     PythonShell.run("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options, function (err, results) {
         if (err) throw err;
         // results is an array consisting of messages collected during execution
         console.log(results);
-        var scriptGUIFill = []
         for(i=1; i<results.length; i++){
             scriptGUIFill.push(results[i])
         }
@@ -44,61 +38,43 @@ function BuildInitialGui(){
   $('body').append('<label for="scriptSelect">Choose Module</label> <select id="scriptSelect" class="form-control scriptInput"></select>')
   $('body').append('<button id="buildGUI" class="btn btn-raised btn-primary" onclick="BuildScriptGUI()">Build GUI</button>')
   $('body').append('<div id="scriptGUI" style="display: none"></div>')
+  $('body').append('<div id="dataStream" style="padding-top: 20px; padding-bottom: 20px;"></div>')
 }
 
 // Searches through the 'python-scripts' folder for usable scripts
 function ScriptSelectorFill(){
-pythonScripts = fs.readdirSync("./python-scripts");
-var scriptSelectHtml = []
-for(i=0; i<pythonScripts.length; i++){
-    if(pythonScripts[i].split(".")[0] == "__pycache__"){}
-    else {
-        scriptSelectHtml.push("<option>" + pythonScripts[i].split(".")[0] + "</option> ")
+  pythonScripts = fs.readdirSync("./python-scripts");
+  var scriptSelectHtml = []
+  for(i=0; i<pythonScripts.length; i++){
+      if(pythonScripts[i].split(".")[0] == "__pycache__"){}
+      else {
+          scriptSelectHtml.push("<option>" + pythonScripts[i].split(".")[0] + "</option> ")
+      }
     }
+      $('#scriptSelect').append(scriptSelectHtml)
   }
-    $('#scriptSelect').append(scriptSelectHtml)
-}
 
 // Run selected script and gather all script inputs
 function RunScript(){
+  pythonArguments = {}
     for(i=0; i< document.getElementsByClassName('scriptInput').length; i++){
-        console.log(document.getElementsByClassName('scriptInput')[i].value)
-        console.log(document.getElementsByClassName('scriptInput')[i].id)
+      pythonArguments[document.getElementsByClassName('scriptInput')[i].id]=[]
     }
-    deviceID=[]
-    for(i=0; i < document.getElementsByClassName('deviceID').length; i++){
-        deviceID.push(document.getElementsByClassName('deviceID')[i].value)}
-
-    inputLow=[]
-    for(i=0; i < document.getElementsByClassName('inputLow').length; i++){
-        inputLow.push(document.getElementsByClassName('inputLow')[i].value)}
-
-    inputHigh=[]
-    for(i=0; i < document.getElementsByClassName('inputHigh').length; i++){
-        inputHigh.push(document.getElementsByClassName('inputHigh')[i].value)}
-
-    currentSteps=[]
-    for(i=0; i < document.getElementsByClassName('currentSteps').length; i++){
-        currentSteps.push(document.getElementsByClassName('currentSteps')[i].value)}
-
-    currentLimit=[]
-    for(i=0; i < document.getElementsByClassName('currentLimit').length; i++){
-        currentLimit.push(document.getElementsByClassName('currentLimit')[i].value)}
-
-    voltageLimit=[]
-    for(i=0; i < document.getElementsByClassName('voltageLimit').length; i++){
-        voltageLimit.push(document.getElementsByClassName('voltageLimit')[i].value)}
-
+    for(i=0; i< document.getElementsByClassName('scriptInput').length; i++){
+      pythonArguments[document.getElementsByClassName('scriptInput')[i].id].push(document.getElementsByClassName('scriptInput')[i].value)
+    }
+    pythonArguments["action"]="measureDevice"
+    console.log(pythonArguments)
     var options = {
         mode: 'text',
         pythonPath: 'python',
-        args: ['measureDevice',"deviceID@"+deviceID,"inputHigh@"+inputHigh,"inputLow@"+inputLow,"currentLimit@"+currentLimit,"currentSteps@"+currentSteps,"userName@"+$('#userName').val(),"chipID@"+$('#chipID').val(),"notes@"+$('#notes').val(),"voltageLimit@"+voltageLimit]
+        args: [JSON.stringify(pythonArguments)]
     };
-
+    console.log(options["args"][0])
     var shell = new PythonShell("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options);
     console.log("Exicuting python script")
     shell.on('message', function (message) {
-        console.log(message)
+      console.log(message)
         $('#dataStream').html(message)
     });
 }

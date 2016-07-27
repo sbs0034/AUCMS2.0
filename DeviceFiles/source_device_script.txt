@@ -14,8 +14,8 @@ setup code end
 main code begin
 
 OUTP ON
-SOUR:RANG i_var
-SOUR:LEV i_var
+SOUR:RANG currentToSource
+SOUR:LEV currentMeasured
 
 main code end
 
