@@ -102,9 +102,13 @@ def ViaGUI(arguments):
         guiFill = ""
 
         print("<h2>Resistor Module</h>")
-        print('<div class="form-group label-floating"><label for="chipID" class="control-label" style="font-weight: 600">Chip ID</label><input type="text" class="form-control scriptInput" id="chipID"></div><br>')
-        print('<div class="form-group label-floating"><label for="userName" class="control-label" style="font-weight: 600">User Name</label><input type="text" class="form-control scriptInput" id="userName"></div><br>')
-        print('<div class="form-group label-floating"><label for="notes" class="control-label" style="font-weight: 600">Measurement Notes</label><textarea class="form-control scriptInput" id="notes"></textarea></div><br>')
+        print(AUCMS.CreateUiComponet({"type":"textInput","id":"chipID","label":"Chip ID"}))
+        AUCMS.CreateJS(
+        "function AddDevice(){console.log(\"<tr class='tableRow'>\"+$('.tableRow').html()+\"</tr>\");"
+        "$('.tableRow').last().after(\"<tr class='tableRow'>\"+$('.tableRow').html()+\"</tr>\");"
+        "$.material.init();}")
+        print(AUCMS.CreateUiComponet({"type":"textInput","id":"userName","label":"User Name"}))
+        print(AUCMS.CreateUiComponet({"type":"textArea","id":"notes","label":"Measurement Notes"}))
         print("<table id='deviceTable' class='table'>")
         print("")
         guiFill=guiFill+("<tr class='tableRow'>")
@@ -116,7 +120,9 @@ def ViaGUI(arguments):
         guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="voltageLimit" class="control-label">Voltage Limit (V)</label><input type="text" class="form-control scriptInput voltageLimit" id="voltageLimit"></div></td>')
         guiFill=guiFill+("</tr>")
         print(guiFill)
-        print("<br><button class='btn btn-raised btn-warning' class='addDevice' onclick='AddDevice()'>Add Device</button><br><br>")
+        # print(AUCMS.CreateUiComponet({"type":"table","rows":[[AUCMS.CreateUiComponet({"type":"textInput","id":"deviceID","class":"deviceID","label":"Device ID"})]],"id":"deviceTable"}))
+        print(AUCMS.CreateUiComponet({"type":"button","label":"Add Device","ifPressed":"AddDevice()"}))
+        # print("<br><button class='btn btn-raised btn-warning' class='addDevice' onclick='AddDevice()'>Add Device</button><br><br>")
 
     if arguments["action"] == "measureDevice":
         measurementType = "Sweep"

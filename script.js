@@ -7,13 +7,6 @@ var fs = require('file-system');
 var pythonScripts;
 var scriptIgnore = ["database","measurement_script","terminal_ui","__pycache__"];
 
-// Add another device to script
-function AddDevice(){
-  console.log("<tr class='tableRow'>"+$('.tableRow').html()+"</tr>")
-    $('.tableRow').last().after("<tr class='tableRow'>"+$('.tableRow').html()+"</tr>")
-    $.material.init()
-}
-
 // Build GUI for selected module
 function BuildScriptGUI() {
 
@@ -47,19 +40,18 @@ function BuildInitialGui(){
 
 // Searches through the 'python-scripts' folder for usable scripts
 function ScriptSelectorFill(){
-pythonScripts = fs.readdirSync("./python-scripts");
-var scriptSelectHtml = []
-for(i=0; i<pythonScripts.length; i++){
-    if(pythonScripts[i].split(".")[0] == "__pycache__"){}
-    else {
-        scriptSelectHtml.push("<option>" + pythonScripts[i].split(".")[0] + "</option> ")
+  pythonScripts = fs.readdirSync("./python-scripts");
+  var scriptSelectHtml = []
+  for(i=0; i<pythonScripts.length; i++){
+      if(pythonScripts[i].split(".")[0] == "__pycache__"){}
+      else {
+          scriptSelectHtml.push("<option>" + pythonScripts[i].split(".")[0] + "</option> ")
+      }
     }
+      $('#scriptSelect').append(scriptSelectHtml)
   }
-    $('#scriptSelect').append(scriptSelectHtml)
-}
 
 // Run selected script and gather all script inputs
-var pythonArguments = {};
 function RunScript(){
     for(i=0; i< document.getElementsByClassName('scriptInput').length; i++){
       pythonArguments[document.getElementsByClassName('scriptInput')[i].id]=[]

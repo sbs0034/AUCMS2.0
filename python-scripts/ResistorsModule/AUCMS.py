@@ -6,6 +6,50 @@ deviceVar = {'currentToSource': 0, "voltageToSource": 0, "inputToClose": "", "in
 # Connects to an existing database or creates one if it does not exist
 conn = sqlite3.connect("database.db")
 
+# Function to create GUI componets
+def CreateUiComponet(componetFeatures):
+    componet = ""
+    # Gets the classes and IDs of the componet, if there was none speciefied it sets them to an empty string
+    try:
+        classes = componetFeatures["class"]
+    except Exception:
+        classes = ""
+    try:
+        ids = componetFeatures["id"]
+    except Exception:
+        ids = ""
+    try:
+        onClick = componetFeatures["ifPressed"]
+    except Exception:
+        onClick = ""
+    if componetFeatures["type"] == "button":
+        componet+='<button class="btn btn-raised btn-success '+classes+'" onclick="'+onClick+'">'+componetFeatures["label"]+"</button>"
+    if componetFeatures["type"] == 'textInput':
+        componet+='<div class="form-group label-floating"><label for="'+ids+'" class="control-label" style="font-weight: 600">'+componetFeatures["label"]+'</label><input type="text" class="form-control '+classes+'" id="'+ids+'"></div>'
+    if componetFeatures["type"] == "textArea":
+        componet+='<div class="form-group label-floating"><label for="'+ids+'" class="control-label" style="font-weight: 600">'+componetFeatures["label"]+'</label><textarea class="form-control '+classes+'" id="'+ids+'"></textarea></div>'
+    if componetFeatures["type"] == "rawHTML":
+        componet+=componetFeatures["html"]
+    if componetFeatures["type"] == "table":
+        componet+='<table class="table" id="'+componetFeatures["id"]+'>'
+        for rows in componetFeatures["rows"]:
+            componet+='<tr class="tableRow">'
+            for columns in rows:
+                componet+="<td>"
+                componet+=columns
+                componet+='</td>'
+            componet+='</tr>'
+        # componet+="</table>"
+    return(componet)
+
+# Creates javascript
+def CreateJS(js):
+    script=""
+    script+='<script>'
+    script+=js
+    script+="</script>"
+    print(script)
+
 # Function for creating a new database table
 def CreateDatabaseTable(tableName, tableFields):
     conn.execute("CREATE TABLE "+"'"+str(tableName)+"'"+tableFields)
