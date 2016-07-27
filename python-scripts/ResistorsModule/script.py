@@ -188,7 +188,7 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
             measureVoltage = 0
             CURSOR_UP_ONE = '\x1b[1A'
             ERASE_LINE = '\x1b[2K'
-            while float(measureVoltage) <= float(wantedVoltage) and float(wantedCurrent) >= float(currentToPush):
+            while float(measureVoltage) <= float(wantedVoltage) and float(wantedCurrent)/1000 >= float(currentToPush):
                 measuredTemp = AUCMS.DeviceControl(temp_device, "Main")[1]
                 currentToPush = currentToPush+(float(currentSteps)/1000)
                 databaseCurrent = databaseCurrent+str(currentToPush)+"\n"
