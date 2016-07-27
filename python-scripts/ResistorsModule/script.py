@@ -138,6 +138,7 @@ def ViaGUI(arguments):
         currentStepsArray=arguments["currentSteps"]
         wantedCurrentArray=arguments["currentLimit"]
         wantedVoltageArray=arguments["voltageLimit"]
+        AUCMS.CreateDatabaseTable(_name,databaseMainTableFields)
         MakeMeasurement("GUI",userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray)
 
 def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray):
