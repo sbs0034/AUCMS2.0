@@ -2225,8 +2225,8 @@ def TestGUI():
         print(voltage[i])
         sys.stdout.flush()
         time.sleep(0.2)
-# try:
-ViaGUI(json.loads(sys.argv[1]))
-# except:
-    # print("Using Terminal \n")
-    # ViaTerminal()
+try:
+    ViaGUI(json.loads(sys.argv[1]))
+except:
+    print("Using Terminal \n")
+    ViaTerminal()
