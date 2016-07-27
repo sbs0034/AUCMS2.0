@@ -211,8 +211,7 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
             AUCMS.conn.commit()
     AUCMS.DeviceControl(source_device, "Finish")
     AUCMS.DeviceControl(switching_device, "Finish")
-    if(userInteraction == "Terminal"):
-        print("Done!")
+    print("Done!")
 
 def TestGUI():
     voltage=[

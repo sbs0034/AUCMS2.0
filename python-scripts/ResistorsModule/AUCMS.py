@@ -1,10 +1,23 @@
 # External libraries needed
-import visa, sqlite3
+import visa, sqlite3, sys, os
 # Keywords for the parsing function to look for in the device script files
 deviceVar = {'currentToSource': 0, "voltageToSource": 0, "inputToClose": "", "inputSlot": "", "currentMeasured =": "", "currentMeasured=": "",
              "voltageMeasured =": "", "voltageMeasured=": "", "inputToOpen": 0, "tempuratureMeasured =":""}
 # Connects to an existing database or creates one if it does not exist
-conn = sqlite3.connect("database.db")
+operatingSystem = sys.platform
+rawScriptPath = os.path.dirname(os.path.realpath(sys.argv[0]))
+rawScriptPath = str(scriptPath_)
+print(rawScriptPath+" script path")
+if operatingSystem == 'win32':
+    rawScriptPath = rawScriptPath.split("\\")
+else:
+    rawScriptPath = rawScriptPath.split("/")
+del rawScriptPath[0]
+scriptPath = ""
+for i in (rawScriptPath):
+    scriptPath = scriptPath+"/"+i
+UniversalDatabase = os.path.isfile(scriptPath+"/database.db")
+conn = sqlite3.connect(scriptPath+"/database.db")
 
 # Function to create GUI componets
 def CreateUiComponet(componetFeatures):
