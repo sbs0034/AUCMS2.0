@@ -6,7 +6,7 @@ deviceVar = {'currentToSource': 0, "voltageToSource": 0, "inputToClose": "", "in
 # Connects to an existing database or creates one if it does not exist
 operatingSystem = sys.platform
 rawScriptPath = os.path.dirname(os.path.realpath(sys.argv[0]))
-rawScriptPath = str(scriptPath_)
+rawScriptPath = str(rawScriptPath)
 print(rawScriptPath+" script path")
 if operatingSystem == 'win32':
     rawScriptPath = rawScriptPath.split("\\")
