@@ -85,6 +85,7 @@ def DeviceControl(device_file, option):
         for line in range(len(deviceCode)):
             if "tempuratureMeasured" in deviceCode[line]:
                 return ["tempuratureMeasured", line]
+                print("okay")
             if "currentMeasured" in deviceCode[line]:
                 return ["currentMeasured", line]
             if "voltageMeasured" in deviceCode[line]:
