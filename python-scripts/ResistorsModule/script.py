@@ -123,9 +123,7 @@ def ViaGUI(arguments):
         guiFill=guiFill+('<td><div class="form-group label-floating"><label style="font-weight: 600" for="voltageLimit" class="control-label">Voltage Limit (V)</label><input type="text" class="form-control scriptInput voltageLimit" id="voltageLimit"></div></td>')
         guiFill=guiFill+("</tr>")
         print(guiFill)
-        # print(AUCMS.CreateUiComponet({"type":"table","rows":[[AUCMS.CreateUiComponet({"type":"textInput","id":"deviceID","class":"deviceID","label":"Device ID"})]],"id":"deviceTable"}))
         print(AUCMS.CreateUiComponet({"type":"button","label":"Add Device","ifPressed":"AddDevice()"}))
-        # print("<br><button class='btn btn-raised btn-warning' class='addDevice' onclick='AddDevice()'>Add Device</button><br><br>")
 
     if arguments["action"] == "measureDevice":
         measurementType = "Sweep"
@@ -145,6 +143,7 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
     AUCMS.DeviceControl(switching_device, "Setup")
     AUCMS.DeviceControl(source_device, "Setup")
     AUCMS.DeviceControl(measurement_device, "Setup")
+    print(sys.stdin.readline())
     try:
         AUCMS.CreateDatabaseTables(_name, databaseMainTableFields)
     except:
@@ -203,6 +202,7 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
                 if(userInteraction == "Terminal"):
                     print(CURSOR_UP_ONE + ERASE_LINE+CURSOR_UP_ONE)
                 print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Voltage Measureed: "+str(float("%.8f" % measureVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
+                sys.stdout.flush()
                 time.sleep(float(delay))
                 i+=1
             criticalCurrent = float(currentToPush)-(float(currentSteps)/1000)
@@ -2223,6 +2223,7 @@ def TestGUI():
     for i in range(len(current)):
         print(current[i])
         print(voltage[i])
+        sys.stdout.flush()
         time.sleep(0.2)
 # try:
 ViaGUI(json.loads(sys.argv[1]))
