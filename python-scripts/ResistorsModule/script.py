@@ -54,6 +54,7 @@ def ViaTerminal():
     wantedCurrentArray = []
     _i = 0
     userInputHigh = "null"
+    AUCMS.CreateDatabaseTable(_name,databaseMainTableFields)
     while(userInputHigh != ""):
         userInputHigh = input("Input HIGH: ")
         if userInputHigh != "":
