@@ -9,11 +9,13 @@ var scriptIgnore = ["database","measurement_script","terminal_ui","__pycache__"]
 
 // Build GUI for selected module
 function BuildScriptGUI() {
+  stuff = {}
+  stuff['action']='buildGUI'
 
     var options = {
     mode: 'text',
     pythonPath: 'python',
-    args: ['{"action":"buildGUI"}']
+    args: [JSON.stringify(stuff)]
     };
     var scriptGUIFill = []
     PythonShell.run("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options, function (err, results) {
@@ -36,6 +38,7 @@ function BuildInitialGui(){
   $('body').append('<label for="scriptSelect">Choose Module</label> <select id="scriptSelect" class="form-control scriptInput"></select>')
   $('body').append('<button id="buildGUI" class="btn btn-raised btn-primary" onclick="BuildScriptGUI()">Build GUI</button>')
   $('body').append('<div id="scriptGUI" style="display: none"></div>')
+  $('body').append('<div id="dataStream" style=""></div>')
 }
 
 // Searches through the 'python-scripts' folder for usable scripts
@@ -68,12 +71,12 @@ function RunScript(){
         args: [JSON.stringify(pythonArguments)]
     };
     console.log(options["args"][0])
-    // var shell = new PythonShell("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options);
-    // console.log("Exicuting python script")
-    // shell.on('message', function (message) {
-    //     console.log(message.test)
-    //     $('#dataStream').html(message)
-    // });
+    var shell = new PythonShell("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options);
+    console.log("Exicuting python script")
+    shell.on('message', function (message) {
+      console.log(message)
+        $('#dataStream').html(message)
+    });
 }
 
 // Waits untill the page is fully loaded

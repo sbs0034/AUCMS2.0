@@ -99,6 +99,8 @@ def ViaTerminal():
     MakeMeasurement("Terminal",userName,notes,_name,deviceIdentifier,measurementType,switch_inputs_high,switch_inputs_low,currentStepsArray,wantedCurrentArray,wantedVoltageArray)
 
 def ViaGUI(arguments):
+    if arguments['action'] == 'Test':
+        TestGUI()
     if arguments["action"] == "buildGUI":
         guiFill = ""
 
@@ -2224,7 +2226,7 @@ def TestGUI():
     for i in range(len(current)):
         print(current[i])
         print(voltage[i])
-        sleep(0.2)
+        time.sleep(0.2)
 try:
     ViaGUI(json.loads(sys.argv[1]))
 except:
