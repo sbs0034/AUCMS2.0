@@ -143,7 +143,6 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
     AUCMS.DeviceControl(switching_device, "Setup")
     AUCMS.DeviceControl(source_device, "Setup")
     AUCMS.DeviceControl(measurement_device, "Setup")
-    print(sys.stdin.readline())
     try:
         AUCMS.CreateDatabaseTables(_name, databaseMainTableFields)
     except:
@@ -2221,10 +2220,10 @@ def TestGUI():
     0.01000999999999976
     ]
     for i in range(len(current)):
-        print(current[i])
-        print(voltage[i])
+        print("Test Data --->   Current Pushed: "+str("%.8f" % current[i])+"   Voltage Measureed: "+str(float("%.8f" % voltage[i]))+"   Resistance: "+str("%.8f" % ((float(voltage[i])/(float(current[i]))))) +"   Tempurature: "+str(290))
+
         sys.stdout.flush()
-        time.sleep(0.2)
+        time.sleep(0.05)
 try:
     ViaGUI(json.loads(sys.argv[1]))
 except:

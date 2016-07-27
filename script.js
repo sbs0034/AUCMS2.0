@@ -38,7 +38,7 @@ function BuildInitialGui(){
   $('body').append('<label for="scriptSelect">Choose Module</label> <select id="scriptSelect" class="form-control scriptInput"></select>')
   $('body').append('<button id="buildGUI" class="btn btn-raised btn-primary" onclick="BuildScriptGUI()">Build GUI</button>')
   $('body').append('<div id="scriptGUI" style="display: none"></div>')
-  $('body').append('<div id="dataStream" style=""></div>')
+  $('body').append('<div id="dataStream" style="padding-top: 20px; padding-bottom: 20px;"></div>')
 }
 
 // Searches through the 'python-scripts' folder for usable scripts
