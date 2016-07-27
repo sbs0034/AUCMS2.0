@@ -52,6 +52,7 @@ function ScriptSelectorFill(){
   }
 
 // Run selected script and gather all script inputs
+pythonArguments = {}
 function RunScript(){
     for(i=0; i< document.getElementsByClassName('scriptInput').length; i++){
       pythonArguments[document.getElementsByClassName('scriptInput')[i].id]=[]

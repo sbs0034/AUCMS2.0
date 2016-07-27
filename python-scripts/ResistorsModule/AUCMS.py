@@ -25,9 +25,9 @@ def CreateUiComponet(componetFeatures):
     if componetFeatures["type"] == "button":
         componet+='<button class="btn btn-raised btn-success '+classes+'" onclick="'+onClick+'">'+componetFeatures["label"]+"</button>"
     if componetFeatures["type"] == 'textInput':
-        componet+='<div class="form-group label-floating"><label for="'+ids+'" class="control-label" style="font-weight: 600">'+componetFeatures["label"]+'</label><input type="text" class="form-control '+classes+'" id="'+ids+'"></div>'
+        componet+='<div class="form-group label-floating"><label for="'+ids+'" class="control-label" style="font-weight: 600">'+componetFeatures["label"]+'</label><input type="text" class="form-control scriptInput'+classes+'" id="'+ids+'"></div>'
     if componetFeatures["type"] == "textArea":
-        componet+='<div class="form-group label-floating"><label for="'+ids+'" class="control-label" style="font-weight: 600">'+componetFeatures["label"]+'</label><textarea class="form-control '+classes+'" id="'+ids+'"></textarea></div>'
+        componet+='<div class="form-group label-floating"><label for="'+ids+'" class="control-label" style="font-weight: 600">'+componetFeatures["label"]+'</label><textarea class="form-control scriptInput '+classes+'" id="'+ids+'"></textarea></div>'
     if componetFeatures["type"] == "rawHTML":
         componet+=componetFeatures["html"]
     if componetFeatures["type"] == "table":
@@ -85,7 +85,6 @@ def DeviceControl(device_file, option):
         for line in range(len(deviceCode)):
             if "tempuratureMeasured" in deviceCode[line]:
                 return ["tempuratureMeasured", line]
-                print("okay")
             if "currentMeasured" in deviceCode[line]:
                 return ["currentMeasured", line]
             if "voltageMeasured" in deviceCode[line]:
