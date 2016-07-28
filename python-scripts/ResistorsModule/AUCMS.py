@@ -7,7 +7,6 @@ deviceVar = {'currentToSource': 0, "voltageToSource": 0, "inputToClose": "", "in
 operatingSystem = sys.platform
 rawScriptPath = os.path.dirname(os.path.realpath(sys.argv[0]))
 rawScriptPath = str(rawScriptPath)
-print(rawScriptPath+" script path")
 if operatingSystem == 'win32':
     rawScriptPath = rawScriptPath.split("\\")
 else:
@@ -67,8 +66,11 @@ def CreateJS(js):
 
 # Function for creating a new database table
 def CreateDatabaseTable(tableName, tableFields):
-    conn.execute("CREATE TABLE "+"'"+str(tableName)+"'"+tableFields)
-    conn.commit()
+    try:
+        conn.execute("CREATE TABLE "+"'"+str(tableName)+"'"+tableFields)
+        conn.commit()
+    except:
+        pass
 
 # Function for reading device code files and sending commands to them
 def DeviceControl(device_file, option):

@@ -16,6 +16,7 @@ main code begin
 OUTP ON
 SOUR:RANG currentToSource
 SOUR:LEV currentToSource
+voltageMeasured = MEAS?
 
 main code end
 

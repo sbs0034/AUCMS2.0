@@ -63,7 +63,7 @@ function RunScript(){
     for(i=0; i< document.getElementsByClassName('scriptInput').length; i++){
       pythonArguments[document.getElementsByClassName('scriptInput')[i].id].push(document.getElementsByClassName('scriptInput')[i].value)
     }
-    pythonArguments["action"]="measureDevice"
+    pythonArguments["action"]="Test"
     console.log(pythonArguments)
     var options = {
         mode: 'text',

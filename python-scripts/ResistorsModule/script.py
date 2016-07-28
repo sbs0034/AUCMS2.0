@@ -1,7 +1,7 @@
 import AUCMS, time, datetime, sys, json
 labelDivB = "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>"
-databaseMainTableFields = "(Notes TEXT, Time TEXT, Date TEXT, UserName TEXT, CriticalCurrent REAL, Current REAL, Voltage REAL, Resistance REAL, Delay REAL, DeviceIdentifier TEXT,  Tempurature REAL, CurrentLimit REAL, VoltageLimit REAL, ForcedCurrentType TEXT)"
-databaseMainTableFields_ = "(Notes, Time, Date, UserName, CriticalCurrent, Current, Voltage, Resistance, Delay, DeviceIdentifier, Tempurature, CurrentLimit, VoltageLimit, ForcedCurrentType)"
+databaseMainTableFields = "(Notes TEXT, Time TEXT, Date TEXT, UserName TEXT, CriticalCurrent REAL, Current REAL, FourWireVoltage REAL, TwoWireVoltage, Resistance REAL, Delay REAL, DeviceIdentifier TEXT,  Tempurature REAL, CurrentLimit REAL, VoltageLimit REAL, ForcedCurrentType TEXT)"
+databaseMainTableFields_ = "(Notes, Time, Date, UserName, CriticalCurrent, Current, FourWireVoltage, TwoWireVoltage, Resistance, Delay, DeviceIdentifier, Tempurature, CurrentLimit, VoltageLimit, ForcedCurrentType)"
 
 #For Testing purposes
 source_device = "DeviceFiles/source_device_script.txt"
@@ -183,33 +183,37 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
             time.sleep(0.25)
             AUCMS.deviceVar["currentToSource"] = 0
             currentToPush = 0
-            databaseVoltage = ""
+            databaseFourWireVoltage = ""
+            databaseTwoWireVoltage = ""
             databaseCurrent = ""
             databaseResistance = ""
-            measureVoltage = 0
+            fourWireMeasuredVoltage = 0
+            twoWireMeasuredVoltage = 0
             CURSOR_UP_ONE = '\x1b[1A'
             ERASE_LINE = '\x1b[2K'
-            while float(measureVoltage) <= float(wantedVoltage) and float(wantedCurrent)/1000 >= float(currentToPush):
+            while float(fourWireMeasuredVoltage) <= float(wantedVoltage) and float(wantedCurrent)/1000 >= float(currentToPush):
                 measuredTemp = AUCMS.DeviceControl(temp_device, "Main")[1]
                 currentToPush = currentToPush+(float(currentSteps)/1000)
                 databaseCurrent = databaseCurrent+str(currentToPush)+"\n"
-                AUCMS.deviceVar["i_var"] = currentToPush
+                AUCMS.deviceVar["currentToSource"] = currentToPush
                 AUCMS.DeviceControl(source_device, "Main")
-                measureVoltage = AUCMS.DeviceControl(measurement_device, "Main")[1]
-                databaseVoltage = databaseVoltage+str(measureVoltage)+"\n"
+                fourWireMeasuredVoltage = AUCMS.DeviceControl(measurement_device, "Main")[1]
+                twoWireMeasuredVoltage = AUCMS.DeviceControl(source_device, "Main")[1]
+                databaseFourWireVoltage = databaseFourWireVoltage+str(fourWireMeasuredVoltage)+"\n"
+                databaseTwoWireVoltage = databaseTwoWireVoltage+str(twoWireMeasuredVoltage)+"\n"
                 databaseResistance = databaseResistance+str(float(measureVoltage)/float(currentToPush))+"\n"
                 # dataFile.write(str(measureVoltage)+","+str(currentToPush)+","+str(float(measureVoltage)/float(currentToPush))+"\n")
                 if(userInteraction == "Terminal"):
                     print(CURSOR_UP_ONE + ERASE_LINE+CURSOR_UP_ONE)
-                    print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Voltage Measureed: "+str(float("%.8f" % measureVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
+                    print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Four Wire Voltage Measureed: "+str(float("%.8f" % fourWireMeasuredVoltage))+"   Two Wire Voltage Measureed: "+str(float("%.8f" % twoWireMeasuredVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
                 else:
-                    print(str(measureVoltage)+","+str(currentToPush))
+                    print(str(fourWireMeasuredVoltage)+","+str(currentToPush))
                 sys.stdout.flush()
                 time.sleep(float(delay))
                 i+=1
             criticalCurrent = float(currentToPush)-(float(currentSteps)/1000)
             AUCMS.conn.execute("INSERT INTO "+"'"+_name+"'"+databaseMainTableFields_+" VALUES("+"'"+notes+"'"+","+"'"+str(datetime.datetime.now().hour)+":"+str(datetime.datetime.now().minute)+":"+str(datetime.datetime.now().second)+"'"+","+
-                         "'"+str(datetime.datetime.now().year)+'-'+str(datetime.datetime.now().month)+'-'+str(datetime.datetime.now().day)+"'"+','+"'"+userName+"'"+','+str(criticalCurrent)+','+"'"+databaseCurrent+"'"+','+"'"+databaseVoltage+"'"+','+"'"+databaseResistance+"'"+","+str(delay)+","+"'"+str(id)+"'"+","+str(measuredTemp)+","+"'"+str(wantedCurrent)+"'"+","+"'"+str(wantedVoltage)+"'"+",'"+str(measurementType)+"')")
+                         "'"+str(datetime.datetime.now().year)+'-'+str(datetime.datetime.now().month)+'-'+str(datetime.datetime.now().day)+"'"+','+"'"+userName+"'"+','+str(criticalCurrent)+','+"'"+databaseCurrent+"'"+','+"'"+databaseFourWireVoltage+"'"+','+"'"+databaseTwoWireVoltage+"'"+','+"'"+databaseResistance+"'"+","+str(delay)+","+"'"+str(id)+"'"+","+str(measuredTemp)+","+"'"+str(wantedCurrent)+"'"+","+"'"+str(wantedVoltage)+"'"+",'"+str(measurementType)+"')")
             AUCMS.conn.commit()
     AUCMS.DeviceControl(source_device, "Finish")
     AUCMS.DeviceControl(switching_device, "Finish")
