@@ -1,6 +1,6 @@
 import AUCMS, time, datetime, sys, json
 labelDivB = "<div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>"
-databaseMainTableFields = "(Notes TEXT, Time TEXT, Date TEXT, UserName TEXT, CriticalCurrent REAL, Current REAL, FourWireVoltage REAL, TwoWireVoltage, Resistance REAL, Delay REAL, DeviceIdentifier TEXT,  Tempurature REAL, CurrentLimit REAL, VoltageLimit REAL, ForcedCurrentType TEXT)"
+databaseMainTableFields = "(Notes TEXT, Time TEXT, Date TEXT, UserName TEXT, CriticalCurrent REAL, Current REAL, FourWireVoltage REAL, TwoWireVoltage REAL, Resistance REAL, Delay REAL, DeviceIdentifier TEXT,  Tempurature REAL, CurrentLimit REAL, VoltageLimit REAL, ForcedCurrentType TEXT)"
 databaseMainTableFields_ = "(Notes, Time, Date, UserName, CriticalCurrent, Current, FourWireVoltage, TwoWireVoltage, Resistance, Delay, DeviceIdentifier, Tempurature, CurrentLimit, VoltageLimit, ForcedCurrentType)"
 
 #For Testing purposes
@@ -217,7 +217,6 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
             AUCMS.conn.commit()
     AUCMS.DeviceControl(source_device, "Finish")
     AUCMS.DeviceControl(switching_device, "Finish")
-    print("Done!")
 
 def TestGUI():
     voltage=[
