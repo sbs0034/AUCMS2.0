@@ -187,7 +187,7 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
             databaseTwoWireVoltage = ""
             databaseCurrent = ""
             databaseResistance = ""
-            fourWireMeasuredVoltage = 0
+            fourWire = 0
             twoWireMeasuredVoltage = 0
             CURSOR_UP_ONE = '\x1b[1A'
             ERASE_LINE = '\x1b[2K'
@@ -205,7 +205,7 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
                 # dataFile.write(str(measureVoltage)+","+str(currentToPush)+","+str(float(measureVoltage)/float(currentToPush))+"\n")
                 if(userInteraction == "Terminal"):
                     print(CURSOR_UP_ONE + ERASE_LINE+CURSOR_UP_ONE)
-                    print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Four Wire Voltage Measureed: "+str(float("%.8f" % fourWireMeasuredVoltage))+"   Two Wire Voltage Measureed: "+str(float("%.8f" % twoWireMeasuredVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
+                    print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Four Wire Voltage Measureed: "+str(float("%.8f" % fourWireMeasuredVoltage))+"   Two Wire Voltage Measureed: "+str(float("%.8f" % twoWireMeasuredVoltage))+"   Resistance: "+str("%.8f" % ((float(fourWireMeasuredVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
                 else:
                     print(str(fourWireMeasuredVoltage)+","+str(currentToPush))
                 sys.stdout.flush()
