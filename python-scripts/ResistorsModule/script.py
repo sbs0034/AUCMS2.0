@@ -201,7 +201,7 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
                 twoWireMeasuredVoltage = AUCMS.DeviceControl(source_device, "Main")[1]
                 databaseFourWireVoltage = databaseFourWireVoltage+str(fourWireMeasuredVoltage)+"\n"
                 databaseTwoWireVoltage = databaseTwoWireVoltage+str(twoWireMeasuredVoltage)+"\n"
-                databaseResistance = databaseResistance+str(float(measureVoltage)/float(currentToPush))+"\n"
+                databaseResistance = databaseResistance+str(float(fourWireMeasuredVoltage)/float(currentToPush))+"\n"
                 # dataFile.write(str(measureVoltage)+","+str(currentToPush)+","+str(float(measureVoltage)/float(currentToPush))+"\n")
                 if(userInteraction == "Terminal"):
                     print(CURSOR_UP_ONE + ERASE_LINE+CURSOR_UP_ONE)
