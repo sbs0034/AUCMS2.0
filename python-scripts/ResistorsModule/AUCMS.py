@@ -43,6 +43,8 @@ def CreateUiComponet(componetFeatures):
         componet+='<div class="form-group label-floating"><label for="'+ids+'" class="control-label" style="font-weight: 600">'+componetFeatures["label"]+'</label><textarea class="form-control scriptInput '+classes+'" id="'+ids+'"></textarea></div>'
     if componetFeatures["type"] == "rawHTML":
         componet+=componetFeatures["html"]
+    if componetFeatures['type'] == 'graph':
+        componet+="<div id='dataGraph'></div>"
     if componetFeatures["type"] == "table":
         componet+='<table class="table" id="'+componetFeatures["id"]+'>'
         for rows in componetFeatures["rows"]:

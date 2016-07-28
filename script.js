@@ -73,9 +73,75 @@ function RunScript(){
     console.log(options["args"][0])
     var shell = new PythonShell("/python-scripts/"+$('#scriptSelect').val()+'/script.py', options);
     console.log("Exicuting python script")
+    var layout = {
+      width: 700,
+      height: 600,
+        xaxis: {
+            showgrid: true,
+            showline: true,
+            mirror: 'ticks',
+            gridcolor: '#bdbdbd',
+            linecolor: '#636363',
+            linewidth: 2,
+            autotick: true,
+            ticks: 'inside',
+            tick0: 0,
+            ticklen: 8,
+            tickwidth: 4,
+            tickcolor: '#000'
+        },
+        yaxis: {
+            showgrid: true,
+            showline: true,
+            mirror: 'ticks',
+            gridcolor: '#bdbdbd',
+            linecolor: '#636363',
+            linewidth: 2,
+            autotick: true,
+            ticks: 'inside',
+            tick0: 0,
+            ticklen: 8,
+            tickwidth: 4,
+            tickcolor: '#000'
+        },
+        font: {
+      family:"Droid Serif, serif",
+      size: 18,
+        },
+        showlegend:true,
+        title:"Data Stream Graph"
+    }
+    x_data = []
+    y_data = []
+    counter=0
     shell.on('message', function (message) {
-      console.log(message)
-        $('#dataStream').html(message)
+      counter++
+      if($('#dataGraph').length == 0){
+        $('#dataStream').html(message.split(",")[0])
+      }
+      else{
+        x_data.push(message.split(",")[0])
+        y_data.push(message.split(",")[1])
+        dataToGraph = []
+        if($('#dataGraph').html()==""){
+          dataToGraph.push({
+              x: x_data,
+              y: y_data,
+              mode: 'lines+markers',
+              type: 'scatter',
+          });
+          Plotly.newPlot('dataGraph', dataToGraph, layout);
+        }
+        if(counter < 15){}
+        else{
+          dataToGraph.x=x_data
+          dataToGraph.y=y_data
+          Plotly.redraw("dataGraph")
+          counter=0
+
+        }
+
+      }
     });
 }
 

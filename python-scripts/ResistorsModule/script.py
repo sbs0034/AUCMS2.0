@@ -124,6 +124,7 @@ def ViaGUI(arguments):
         guiFill=guiFill+("</tr>")
         print(guiFill)
         print(AUCMS.CreateUiComponet({"type":"button","label":"Add Device","ifPressed":"AddDevice()"}))
+        print(AUCMS.CreateUiComponet({"type":"graph"}))
 
     if arguments["action"] == "measureDevice":
         measurementType = "Sweep"
@@ -200,7 +201,9 @@ def MakeMeasurement(userInteraction,userName,notes,_name,deviceIdentifier,measur
                 # dataFile.write(str(measureVoltage)+","+str(currentToPush)+","+str(float(measureVoltage)/float(currentToPush))+"\n")
                 if(userInteraction == "Terminal"):
                     print(CURSOR_UP_ONE + ERASE_LINE+CURSOR_UP_ONE)
-                print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Voltage Measureed: "+str(float("%.8f" % measureVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
+                    print(str(id)+" --->   Current Pushed: "+str("%.8f" % currentToPush)+"   Voltage Measureed: "+str(float("%.8f" % measureVoltage))+"   Resistance: "+str("%.8f" % ((float(measureVoltage)/(float(currentToPush))))) +"   Tempurature: "+str(measuredTemp))
+                else:
+                    print(str(measureVoltage)+","+str(currentToPush))
                 sys.stdout.flush()
                 time.sleep(float(delay))
                 i+=1
@@ -2220,8 +2223,8 @@ def TestGUI():
     0.01000999999999976
     ]
     for i in range(len(current)):
-        print("Test Data --->   Current Pushed: "+str("%.8f" % current[i])+"   Voltage Measureed: "+str(float("%.8f" % voltage[i]))+"   Resistance: "+str("%.8f" % ((float(voltage[i])/(float(current[i]))))) +"   Tempurature: "+str(290))
-
+        # print("Test Data --->   Current Pushed: "+str("%.8f" % current[i])+"   Voltage Measureed: "+str(float("%.8f" % voltage[i]))+"   Resistance: "+str("%.8f" % ((float(voltage[i])/(float(current[i]))))) +"   Tempurature: "+str(290))
+        print(str(current[i])+","+str(voltage[i]))
         sys.stdout.flush()
         time.sleep(0.05)
 try:
